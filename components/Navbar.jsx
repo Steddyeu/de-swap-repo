@@ -72,8 +72,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
-    navbar Icon: {
 
-    }
 });
 export default Navbar;
