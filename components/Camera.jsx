@@ -1,13 +1,22 @@
-import React, { Component } from "react";
+import React from "react";
+import { Button, StyleSheet, TextInput, View } from "react-native";
+import { Text } from "react-native-elements";
 
-class Camera extends Component {
-  render() {
-    return (
-      <View>
-        <Text>upload image</Text>
-      </View>
-    );
-  }
+function CameraScreen() {
+  return (
+    <View style={styles.Camera}>
+      <Text>CAMERA!</Text>
+    </View>
+  );
 }
 
-export default Camera;
+const styles = StyleSheet.create({
+  Camera: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
+
+export default CameraScreen;

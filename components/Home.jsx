@@ -1,15 +1,22 @@
-import React, { Component } from 'react';
-import Navbar from './Navbar';
+import React from "react";
+import { Button, StyleSheet, TextInput, View } from "react-native";
+import { Text } from "react-native-elements";
 
-class Home extends Component {
-    render() {
-        return (
-            <div>
-                <p>Home</p>
-                <Navbar />
-            </div>
-        );
-    }
+function HomeScreen() {
+  return (
+    <View style={styles.Home}>
+      <Text>HOMEPAGE!</Text>
+    </View>
+  );
 }
 
-export default Home;
+const styles = StyleSheet.create({
+  Home: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
+
+export default HomeScreen;

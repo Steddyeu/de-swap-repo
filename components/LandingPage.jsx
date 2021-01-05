@@ -1,43 +1,39 @@
-import { StatusBar } from "expo-status-bar";
-import { Link } from "@reach/router";
-import { StyleSheet, View } from "react-native";
-import React, { Component } from "react";
+import React from "react";
+import { StyleSheet, TextInput, View } from "react-native";
 import { Text } from "react-native-elements";
 import { Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-class LandingPage extends Component {
-  state = {};
+function LandingPage() {
+  return (
+    <View style={styles.landingPage}>
+      <Text h1>De-Swap</Text>
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text h1>De-Swap</Text>
-        <StatusBar style="auto" />
-        <Link to={"/home"}>
-          <Button
-            icon={<Icon name="user" size={15} color="white" />}
-            raised
-            title="Log in"
-          />
-        </Link>
-        <Link to={"/signup"}>
-          <Button
-            icon={<Icon name="user-plus" size={15} color="white" />}
-            raised
-            title="Sign up"
-          />
-        </Link>
-      </View>
-    );
-  }
+      <Button
+        style={styles.button}
+        raised
+        title="Sign Up"
+        icon={<Icon name="user" size={25} color="white" />}
+      />
+      <Button
+        raised
+        title="Log In"
+        icon={<Icon name="arrow-right" size={20} color="white" />}
+      />
+    </View>
+  );
 }
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "#fff",
-//     alignItems: "center",
-//     justifyContent: "center",
-//   },
-// });
+
+const styles = StyleSheet.create({
+  landingPage: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  button: {
+    color: "#20232a",
+  },
+});
+
 export default LandingPage;

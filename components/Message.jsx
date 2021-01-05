@@ -1,13 +1,22 @@
-import React, { Component } from 'react';
+import React from "react";
+import { Button, StyleSheet, TextInput, View } from "react-native";
+import { Text } from "react-native-elements";
 
-class Message extends Component {
-    render() {
-        return (
-            <div>
-                <p>message page</p>
-            </div>
-        );
-    }
+function MessageScreen() {
+  return (
+    <View style={styles.Message}>
+      <Text>MESSAGE!</Text>
+    </View>
+  );
 }
 
-export default Message;
+const styles = StyleSheet.create({
+  Message: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
+
+export default MessageScreen;

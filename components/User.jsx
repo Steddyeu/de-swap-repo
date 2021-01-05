@@ -1,13 +1,22 @@
-import React, { Component } from 'react';
+import React from "react";
+import { Button, StyleSheet, TextInput, View } from "react-native";
+import { Text } from "react-native-elements";
 
-class User extends Component {
-    render() {
-        return (
-            <div>
-                <p>user page</p>
-            </div>
-        );
-    }
+function UserScreen() {
+  return (
+    <View style={styles.User}>
+      <Text>USER!</Text>
+    </View>
+  );
 }
 
-export default User;
+const styles = StyleSheet.create({
+  User: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
+
+export default UserScreen;
