@@ -15,8 +15,8 @@ import firebase from "./firebase-config";
 export default function App(){
   const dbh = firebase.firestore();
 
-  dbh.collection("characters").doc("mario")({
-    employment: "robber-king",
+  dbh.collection("characters").doc("mario").set({
+    employment: "robber-queen!",
     outfitColor: "red",
     specialAttack: "fireball",
   });
