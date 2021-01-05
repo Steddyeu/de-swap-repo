@@ -3,8 +3,17 @@ import { StyleSheet, TextInput, View } from "react-native";
 import { Text } from "react-native-elements";
 import { Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
+import firebase from "./firebase-config";
 
-const App = () => {
+export default function App() {
+  const dbh = firebase.firestore();
+
+  dbh.collection("characters").doc("mario").set({
+    employment: "robber-queen!",
+    outfitColor: "red",
+    specialAttack: "fireball",
+  });
+
   return (
     <View style={styles.landingPage}>
       <Text h1>De-Swap</Text>
@@ -22,7 +31,7 @@ const App = () => {
       />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   landingPage: {
@@ -35,5 +44,3 @@ const styles = StyleSheet.create({
     color: "#20232a",
   },
 });
-
-export default App;
