@@ -27,14 +27,25 @@ function MyTabs() {
   );
 }
 
+import { auth } from "firebase";
+
 export default function App() {
   const dbh = firebase.firestore();
-
   dbh.collection("characters").doc("mario").set({
     employment: "robber-queen!",
     outfitColor: "red",
     specialAttack: "fireball",
   });
+
+  const email = "Don@gmail.com";
+  const password = "12345password";
+
+  firebase
+    .auth()
+    .createUserWithEmailAndPassword(email, password)
+    .then(() => {
+      console.log("hello from createuser");
+    });
 
   return (
     <NavigationContainer>
