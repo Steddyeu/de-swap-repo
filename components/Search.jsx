@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
-class SignUpPage extends Component {
+class Search extends Component {
     render() {
         return (
             <div>
-                <p>sign up</p>
+                <p>search page</p>
             </div>
         );
     }
 }
 
-export default SignUpPage;
+export default Search;

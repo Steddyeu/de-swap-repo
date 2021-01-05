@@ -2,10 +2,13 @@ import { StatusBar } from "expo-status-bar";
 import { Router } from '@reach/router';
 import { Button, StyleSheet, Text, View } from "react-native";
 import LandingPage from './components/LandingPage'
-import HomePage from './components/HomePage'
+import Home from './components/Home'
 import React, { Component } from 'react';
-import SignUpPage from "./components/SignUpPage";
-
+import SignUp from "./components/SignUp";
+import Search from "./components/Search";
+import Camera from "./components/Camera";
+import Message from "./components/Message";
+import User from "./components/User";
 class App extends Component {
   render() {
     return (
@@ -13,8 +16,12 @@ class App extends Component {
 
         <Router>
           <LandingPage path='/' />
-          <HomePage path='/home' />
-          <SignUpPage path='/signup' />
+          <Home path='/home' />
+          <SignUp path='/signup' />
+          <Search path='/search' />
+          <Camera path='/camera' />
+          <Message path='/message' />
+          <User path='/user' />
         </Router>
       </div>
     );
