@@ -9,8 +9,19 @@ import Search from "./components/Search";
 import Camera from "./components/Camera";
 import Message from "./components/Message";
 import User from "./components/User";
-class App extends Component {
-  render() {
+import firebase from "./firebase-config";
+
+
+export default function App(){
+  const dbh = firebase.firestore();
+
+  dbh.collection("characters").doc("mario").set({
+    employment: "robber-queen!",
+    outfitColor: "red",
+    specialAttack: "fireball",
+  });
+
+ 
     return (
       <div>
 
@@ -25,7 +36,8 @@ class App extends Component {
         </Router>
       </div>
     );
-  }
 }
 
-export default App;
+
+
+
