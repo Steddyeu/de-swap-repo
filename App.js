@@ -1,31 +1,39 @@
-import { StatusBar } from "expo-status-bar";
-import { Router } from '@reach/router';
-import { Button, StyleSheet, Text, View } from "react-native";
-import LandingPage from './components/LandingPage'
-import Home from './components/Home'
-import React, { Component } from 'react';
-import SignUp from "./components/SignUp";
-import Search from "./components/Search";
-import Camera from "./components/Camera";
-import Message from "./components/Message";
-import User from "./components/User";
-class App extends Component {
-  render() {
-    return (
-      <div>
+import React from "react";
+import { StyleSheet, TextInput, View } from "react-native";
+import { Text } from "react-native-elements";
+import { Button } from "react-native-elements";
+import Icon from "react-native-vector-icons/FontAwesome";
 
-        <Router>
-          <LandingPage path='/' />
-          <Home path='/home' />
-          <SignUp path='/signup' />
-          <Search path='/search' />
-          <Camera path='/camera' />
-          <Message path='/message' />
-          <User path='/user' />
-        </Router>
-      </div>
-    );
-  }
-}
+const App = () => {
+  return (
+    <View style={styles.landingPage}>
+      <Text h1>De-Swap</Text>
+
+      <Button
+        style={styles.button}
+        raised
+        title="Sign Up"
+        icon={<Icon name="user" size={25} color="white" />}
+      />
+      <Button
+        raised
+        title="Log In"
+        icon={<Icon name="arrow-right" size={20} color="white" />}
+      />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  landingPage: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  button: {
+    color: "#20232a",
+  },
+});
 
 export default App;

@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 class Camera extends Component {
-    render() {
-        return (
-            <div>
-                <p>upload image</p>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <View>
+        <Text>upload image</Text>
+      </View>
+    );
+  }
 }
 
 export default Camera;
