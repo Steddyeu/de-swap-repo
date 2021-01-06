@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import { Text } from "react-native-elements";
 import { Button } from "react-native-elements";
@@ -11,7 +11,9 @@ import UserScreen from "./components/User";
 import CameraScreen from "./components/Camera";
 import MessagesScreen from "./components/Message";
 import HomeScreen from "./components/Home";
-import LandingPage from "./components/LandingPage";
+import LandingStackScreen from "./components/LandingPage";
+import { auth } from "firebase";
+import { render } from "react-dom";
 
 const Tab = createBottomTabNavigator();
 
@@ -22,34 +24,65 @@ function MyTabs() {
       <Tab.Screen name="Camera" component={CameraScreen} />
       <Tab.Screen name="Messages" component={MessagesScreen} />
       <Tab.Screen name="User" component={UserScreen} />
-      <Tab.Screen name="LandingPage" component={LandingPage} />
+      {/* <Tab.Screen name="Landing" component={LandingStackScreen} /> */}
     </Tab.Navigator>
   );
 }
 
-import { auth } from "firebase";
 
-export default function App() {
-  const dbh = firebase.firestore();
-  dbh.collection("characters").doc("mario").set({
-    employment: "robber-queen!",
-    outfitColor: "red",
-    specialAttack: "fireball",
-  });
 
-  const email = "Don@gmail.com";
-  const password = "12345password";
+class App extends Component {
+  state = {
+    isLoggedIn: false,
+  }
+  componentDidMount() {
 
-  firebase
-    .auth()
-    .createUserWithEmailAndPassword(email, password)
-    .then(() => {
-      console.log("hello from createuser");
-    });
+    const user = firebase
+      .auth()
+      .currentUser;
 
-  return (
-    <NavigationContainer>
-      <MyTabs />
-    </NavigationContainer>
-  );
+    if (user) {
+      this.setState({ isLoggedIn: true })
+    } else {
+      this.setState({ isLoggedIn: false })
+    }
+  }
+
+  logInUser() {
+
+  }
+
+  render() {
+
+
+    const { isLoggedIn } = this.state
+
+    return (
+      (isLoggedIn ?
+        (<NavigationContainer>
+
+          <MyTabs />
+
+        </NavigationContainer>
+        ) : (
+          <NavigationContainer>
+
+            <LandingStackScreen />
+          </NavigationContainer>
+
+        )
+      )
+
+
+      // <NavigationContainer>
+
+      //   <MyTabs />
+
+      // </NavigationContainer>
+
+    )
+
+  }
+
 }
+export default App
