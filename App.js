@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import { Text } from "react-native-elements";
 import { Button } from "react-native-elements";
@@ -11,45 +11,107 @@ import UserScreen from "./components/User";
 import CameraScreen from "./components/Camera";
 import MessagesScreen from "./components/Message";
 import HomeScreen from "./components/Home";
-import LandingPage from "./components/LandingPage";
+import LandingStackScreen from "./components/LandingPage";
+import { auth } from "firebase";
+import { render } from "react-dom";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { UserContext } from "./components/context/user";
+
 
 const Tab = createBottomTabNavigator();
 
 function MyTabs() {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Camera" component={CameraScreen} />
-      <Tab.Screen name="Messages" component={MessagesScreen} />
-      <Tab.Screen name="User" component={UserScreen} />
-      <Tab.Screen name="LandingPage" component={LandingPage} />
+    <Tab.Navigator initialRouteName="Home"
+      tabBarOptions={{
+        activeTintColor: 'darkblue',
+      }}>
+      <Tab.Screen name="Home" component={HomeScreen} options={{
+        tabBarLabel: 'Home',
+        tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="home" color={color} size={size} />
+        ),
+      }} />
+      <Tab.Screen name="Camera" component={CameraScreen} options={{
+        tabBarLabel: 'Camera',
+        tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="camera" color={color} size={size} />
+        ),
+      }} />
+      <Tab.Screen name="Messages" component={MessagesScreen} options={{
+        tabBarLabel: 'Messages',
+        tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="email" color={color} size={size} />
+        ),
+      }} />
+      <Tab.Screen name="User" component={UserScreen} options={{
+        tabBarLabel: 'User',
+        tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="account" color={color} size={size} />
+        ),
+      }} />
+      {/* <Tab.Screen name="Landing" component={LandingStackScreen} /> */}
     </Tab.Navigator>
   );
 }
 
-import { auth } from "firebase";
 
-export default function App() {
-  const dbh = firebase.firestore();
-  dbh.collection("characters").doc("mario").set({
-    employment: "robber-queen!",
-    outfitColor: "red",
-    specialAttack: "fireball",
-  });
 
-  const email = "Don@gmail.com";
-  const password = "12345password";
+class App extends Component {
+  state = {
+    isLoggedIn: false,
+  }
+  componentDidMount() {
+    console.log('hi from app')
+    const user = firebase
+      .auth()
+      .currentUser;
 
-  firebase
-    .auth()
-    .createUserWithEmailAndPassword(email, password)
-    .then(() => {
-      console.log("hello from createuser");
-    });
+    if (user) {
+      this.setState({ isLoggedIn: true })
+    } else {
+      this.setState({ isLoggedIn: false })
+    }
+  }
 
-  return (
-    <NavigationContainer>
-      <MyTabs />
-    </NavigationContainer>
-  );
+  logInUser = () => {
+    const user = firebase
+      .auth()
+      .currentUser;
+    if (user) {
+      this.setState({ isLoggedIn: true })
+    } else {
+      this.setState({ isLoggedIn: false })
+
+    }
+  }
+
+
+  render() {
+
+
+    const { isLoggedIn } = this.state
+    console.log(isLoggedIn, 'isloggedin')
+    return (
+      <UserContext.Provider
+        value={{ isLoggedIn, logInUser: this.logInUser }}
+      >
+        {isLoggedIn ? (
+
+          <NavigationContainer>
+            <MyTabs />
+
+          </NavigationContainer>
+        ) : (
+            <NavigationContainer>
+              <LandingStackScreen />
+            </NavigationContainer>
+
+          )}
+      </UserContext.Provider>
+    )
+
+  }
+
 }
+export default App
