@@ -1,19 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Button, StyleSheet, TextInput, View } from "react-native";
 import { Text } from "react-native-elements";
 import firebase from "../firebase-config";
+import { UserContext } from './context/user';
 
 
-
-function UserScreen({ navigation }) {
-
+function UserScreen() {
+    const { logInUser } = useContext(UserContext)
     const user = firebase.auth().currentUser
     const signOutUser = () => {
 
         firebase.auth()
             .signOut()
             .then(() => {
-                navigation.navigate('LandingPage')
+                logInUser()
             })
     }
 

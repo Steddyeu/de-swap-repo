@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, TextInput, View } from "react-native";
+import { StyleSheet, TextInput, View, Image, TouchableOpacity } from "react-native";
 import { Text } from "react-native-elements";
 import { Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -9,22 +9,28 @@ import { createStackNavigator } from '@react-navigation/stack';
 // const Stack = createStackNavigator()
 function LandingPage({ navigation }) {
     return (
-        <View style={styles.landingPage}>
-            <Text h1>De-Swap</Text>
 
-            <Button
-                style={styles.button}
+        <View style={styles.landingPage}>
+
+            <Image source={require('../images/logo.png')} />
+            <TouchableOpacity style={styles.landingButton}
                 raised
-                title="Sign Up"
+                // title="Sign Up"
                 icon={<Icon name="user" size={25} color="white" />}
                 onPress={() => navigation.navigate('Signup')}
-            />
-            <Button
+            >
+                <Text>Sign Up</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.landingButton}
                 raised
-                title="Log In"
+                // title="Log In"
                 icon={<Icon name="arrow-right" size={20} color="white" />}
                 onPress={() => navigation.navigate('Login')}
-            />
+            >
+                <Text>Log In</Text>
+
+            </TouchableOpacity>
 
         </View>
 
@@ -33,11 +39,16 @@ function LandingPage({ navigation }) {
 const LandingStack = createStackNavigator();
 
 function LandingStackScreen() {
+
     return (
         <LandingStack.Navigator>
             <LandingStack.Screen name="LandingPage" component={LandingPage} />
+
+
             <LandingStack.Screen name="Signup" component={SignUp} />
             <LandingStack.Screen name="Login" component={Login} />
+
+
         </LandingStack.Navigator>
     );
 }
@@ -49,8 +60,15 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
-    button: {
-        color: "#20232a",
+    landingButton: {
+
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#DDDDDD",
+        padding: 10,
+        marginTop: 10,
+        width: '70%',
+
     },
 });
 

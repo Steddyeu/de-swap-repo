@@ -14,16 +14,42 @@ import HomeScreen from "./components/Home";
 import LandingStackScreen from "./components/LandingPage";
 import { auth } from "firebase";
 import { render } from "react-dom";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { UserContext } from "./components/context/user";
+
 
 const Tab = createBottomTabNavigator();
 
 function MyTabs() {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Camera" component={CameraScreen} />
-      <Tab.Screen name="Messages" component={MessagesScreen} />
-      <Tab.Screen name="User" component={UserScreen} />
+    <Tab.Navigator initialRouteName="Home"
+      tabBarOptions={{
+        activeTintColor: 'darkblue',
+      }}>
+      <Tab.Screen name="Home" component={HomeScreen} options={{
+        tabBarLabel: 'Home',
+        tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="home" color={color} size={size} />
+        ),
+      }} />
+      <Tab.Screen name="Camera" component={CameraScreen} options={{
+        tabBarLabel: 'Camera',
+        tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="camera" color={color} size={size} />
+        ),
+      }} />
+      <Tab.Screen name="Messages" component={MessagesScreen} options={{
+        tabBarLabel: 'Messages',
+        tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="email" color={color} size={size} />
+        ),
+      }} />
+      <Tab.Screen name="User" component={UserScreen} options={{
+        tabBarLabel: 'User',
+        tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="account" color={color} size={size} />
+        ),
+      }} />
       {/* <Tab.Screen name="Landing" component={LandingStackScreen} /> */}
     </Tab.Navigator>
   );
@@ -36,7 +62,7 @@ class App extends Component {
     isLoggedIn: false,
   }
   componentDidMount() {
-
+    console.log('hi from app')
     const user = firebase
       .auth()
       .currentUser;
@@ -48,38 +74,41 @@ class App extends Component {
     }
   }
 
-  logInUser() {
+  logInUser = () => {
+    const user = firebase
+      .auth()
+      .currentUser;
+    if (user) {
+      this.setState({ isLoggedIn: true })
+    } else {
+      this.setState({ isLoggedIn: false })
 
+    }
   }
+
 
   render() {
 
 
     const { isLoggedIn } = this.state
-
+    console.log(isLoggedIn, 'isloggedin')
     return (
-      (isLoggedIn ?
-        (<NavigationContainer>
+      <UserContext.Provider
+        value={{ isLoggedIn, logInUser: this.logInUser }}
+      >
+        {isLoggedIn ? (
 
-          <MyTabs />
-
-        </NavigationContainer>
-        ) : (
           <NavigationContainer>
+            <MyTabs />
 
-            <LandingStackScreen />
           </NavigationContainer>
+        ) : (
+            <NavigationContainer>
+              <LandingStackScreen />
+            </NavigationContainer>
 
-        )
-      )
-
-
-      // <NavigationContainer>
-
-      //   <MyTabs />
-
-      // </NavigationContainer>
-
+          )}
+      </UserContext.Provider>
     )
 
   }

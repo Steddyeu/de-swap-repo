@@ -1,13 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component, useContext } from 'react';
 import { Button, TextInput, View } from 'react-native';
+import { Route } from 'react-router-native';
 import firebase from "../firebase-config";
+import { UserContext } from './context/user';
 
 
 
 class Login extends Component {
 
     state = {
-
+        loggedIn: this.context.isLoggedIn,
         email: '',
         password: ''
     }
@@ -16,12 +18,11 @@ class Login extends Component {
     }
     submitLogin = async () => {
         const { email, password } = this.state
-        const { navigation } = this.props
         firebase
             .auth()
             .signInWithEmailAndPassword(email, password)
             .then(() => {
-                navigation.navigate('Home')
+                this.context.logInUser()
             })
             .catch(err => {
                 alert(err)
@@ -51,6 +52,6 @@ class Login extends Component {
     }
 }
 
-
+Login.contextType = UserContext;
 export default Login;
 

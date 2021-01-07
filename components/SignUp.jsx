@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, useContext } from 'react';
 import { Button, TextInput, View } from 'react-native';
 import firebase from "../firebase-config";
-
+import { UserContext } from './context/user';
 
 
 class SignUp extends Component {
@@ -21,7 +21,7 @@ class SignUp extends Component {
             .auth()
             .createUserWithEmailAndPassword(email, password)
             .then(() => {
-                navigation.navigate('Home')
+                this.context.logInUser()
             })
             .catch(err => {
                 alert(err)
@@ -58,6 +58,6 @@ class SignUp extends Component {
     }
 }
 
-
+SignUp.contextType = UserContext;
 export default SignUp;
 
