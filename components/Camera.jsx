@@ -10,10 +10,13 @@ import {
   Alert,
   Image,
   Button,
+  text,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
 import * as firebase from "firebase";
+import { useForm } from "react-hook-form";
+import { TextInput } from "react-native-gesture-handler";
 
 export default function Camera() {
   const [image, setImage] = useState(null);
@@ -52,10 +55,8 @@ export default function Camera() {
     let result = await ImagePicker.launchCameraAsync();
 
     if (!result.cancelled) {
-      setImage(result.uri)
-     
+      setImage(result.uri);
     }
-    
   };
 
   const uploadImage = async (uri, imageName) => {
@@ -79,14 +80,38 @@ export default function Camera() {
       });
   };
 
+  const { register, handleSubmit, setValue } = useForm();
+
+  useEffect(() => {
+    register("imageName");
+  }, [register]);
+
+  const onSubmit = (data) => {
+    console.log("data--->", data.imageName);
+    uploadImage(image, data.imageName)
+      .then(() => {
+        Alert.alert("Success!");
+      })
+      .catch((error) => {
+        Alert.alert(error.message);
+      })
+  };
+
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Button title="Pick an image from camera roll" onPress={pickImage} />
       <Button title="open camera..." onPress={onChooseImagePress} />
+
       {image && (
         <>
           <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
-          <Button title="Submit" onPress={submitPhoto} />
+          <Text>Image name:</Text>
+          <TextInput
+            onChangeText={(text) => {
+              setValue("imageName", text);
+            }}
+          />
+          <Button title="Submit" onPress={handleSubmit(onSubmit)} />
           <Button title="Clear" onPress={() => setImage(!image)} />
         </>
       )}
@@ -95,43 +120,6 @@ export default function Camera() {
 }
 
 // export default class CameraScreen extends React.Component() {
-// static navifationOptions = {
-//   header: null,
-// }
-
-//   onChooseImagePress = async () => {
-//     let result = await ImagePicker.launchCameraAsync();
-//         // let result = await ImagePicker.launchImageLibraryAsync();
-
-//     if (!result.cancelled) {
-//       this.uplaodImage(result.uri, 'test-image')
-//       .then(() => {
-
-//       })
-// .catch((error) => {
-//   Alert.alert(error)
-// })
-//     }
-//   }
-
-//   uploadImage = async (uri, imageName) => {
-//     const response = await fetch(uri);
-//     const blob = await response.blob();
-
-//     let ref = firebase.storage().ref().child("images/" + imageName);
-//     return ref.put(blob);
-
-//   }
-
-// render() {
-//   return (
-//     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-//       <Text>Upload image!</Text>
-//      <Button title="Choose image..." onPress={this.onChooseImagePress} />
-//     </View>
-//   );
-// }
-// }
 
 // const styles = StyleSheet.create({
 //   Camera: {
