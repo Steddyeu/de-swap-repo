@@ -87,10 +87,23 @@ export default function Camera() {
   }, [register]);
 
   const onSubmit = (data) => {
-    console.log("data--->", data.imageName);
+    console.log("data--->", data);
     uploadImage(image, data.imageName)
       .then(() => {
-        Alert.alert("Success!");
+        const storage = firebase.storage().ref();
+        const imageRef = storage.child(`${user.displayName}/` + data.imageName);
+        // console.log("data--->", imageRef);
+        imageRef.getDownloadURL().then((url) => {
+          //console.log(“upLoadRef--->“, url);
+          // console.log(‘data---->’, data)
+          const db = firebase.firestore();
+          db.collection("items").add({
+            name: data.imageName,
+            url: url,
+            size: "test",
+            owner: user.displayName,
+          });
+        });
       })
       .catch((error) => {
         Alert.alert(error.message);
