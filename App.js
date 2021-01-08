@@ -104,10 +104,10 @@ class App extends Component {
             <MyTabs />
           </NavigationContainer>
         ) : (
-          <NavigationContainer>
-            <LandingStackScreen />
-          </NavigationContainer>
-        )}
+            <NavigationContainer>
+              <LandingStackScreen />
+            </NavigationContainer>
+          )}
       </UserContext.Provider>
     );
   }
