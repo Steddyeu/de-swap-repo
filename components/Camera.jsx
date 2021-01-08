@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
-import * as firebase from "firebase";
+import firebase from "../firebase-config";
 import { useForm } from "react-hook-form";
 import { TextInput } from "react-native-gesture-handler";
 
