@@ -1,7 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Button, StyleSheet, TextInput, View, Image } from "react-native";
+import {
+  Button,
+  StyleSheet,
+  TextInput,
+  View,
+  Image,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
 import { Text } from "react-native-elements";
 import firebase from "../firebase-config";
+import { Dimensions } from "react-native";
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
+
 
 function HomeScreen() {
   const [imageUrls, setImageUrls] = useState([]);
@@ -26,14 +38,16 @@ function HomeScreen() {
   return (
     <View style={styles.Home}>
       <Text>homepage!</Text>
-      {imageUrls.map((imageUrl) => {
-        return (
-          <Image
-            source={{ uri: imageUrl }}
-            style={{ width: 130, height: 130 }}
-          />
-        );
-      })}
+<FlatList data={imageUrls} renderItem={({ item }) => (
+                    <TouchableOpacity onPress={() => { }}>
+                        <Image source={{ uri: item }} style={{ width: windowWidth / 3, height: windowWidth / 3 }} />
+                    </TouchableOpacity>
+
+
+                )} numColumns={3} >
+
+                </FlatList>
+     
     </View>
   );
 }
