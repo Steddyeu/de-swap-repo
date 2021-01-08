@@ -21,7 +21,7 @@ import { TextInput } from "react-native-gesture-handler";
 export default function Camera() {
   const [image, setImage] = useState(null);
 
-  let photoName = "";
+  const user = firebase.auth().currentUser;
 
   useEffect(() => {
     (async () => {
@@ -66,7 +66,7 @@ export default function Camera() {
     let ref = firebase
       .storage()
       .ref()
-      .child("images/" + imageName);
+      .child(`${user.displayName}/` + imageName);
     return ref.put(blob);
   };
 
@@ -94,7 +94,7 @@ export default function Camera() {
       })
       .catch((error) => {
         Alert.alert(error.message);
-      })
+      });
   };
 
   return (
