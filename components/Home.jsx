@@ -14,7 +14,6 @@ import { Dimensions } from "react-native";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
-
 function HomeScreen() {
   const [imageUrls, setImageUrls] = useState([]);
 
@@ -28,7 +27,7 @@ function HomeScreen() {
         });
       })
     ).then((imageUrls) => {
-      setImageUrls(imageUrls)
+      setImageUrls(imageUrls);
     });
   };
   useEffect(() => {
@@ -38,16 +37,18 @@ function HomeScreen() {
   return (
     <View style={styles.Home}>
       <Text>homepage!</Text>
-<FlatList data={imageUrls} renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => { }}>
-                        <Image source={{ uri: item }} style={{ width: windowWidth / 3, height: windowWidth / 3 }} />
-                    </TouchableOpacity>
-
-
-                )} numColumns={3} >
-
-                </FlatList>
-     
+      <FlatList
+        data={imageUrls}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => {}}>
+            <Image
+              source={{ uri: item }}
+              style={{ width: windowWidth / 3, height: windowWidth / 3 }}
+            />
+          </TouchableOpacity>
+        )}
+        numColumns={3}
+      ></FlatList>
     </View>
   );
 }
@@ -55,6 +56,7 @@ function HomeScreen() {
 const styles = StyleSheet.create({
   Home: {
     flex: 1,
+    marginTop: 40,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
