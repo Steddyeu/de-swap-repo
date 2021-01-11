@@ -17,9 +17,13 @@ import Constants from "expo-constants";
 import firebase from "../firebase-config";
 import { useForm } from "react-hook-form";
 import { TextInput } from "react-native-gesture-handler";
+import { Picker } from "@react-native-picker/picker";
 
 export default function Camera() {
   const [image, setImage] = useState(null);
+  const [selectedSize, setSelectedSize] = useState("");
+  const [selectedCondition, setSelectedCondition] = useState("");
+  const [selectedType, setSelectedType] = useState("");
 
   const user = firebase.auth().currentUser;
 
@@ -44,7 +48,7 @@ export default function Camera() {
       quality: 1,
     });
 
-    console.log(result);
+    //console.log(result);
 
     if (!result.cancelled) {
       setImage(result.uri);
@@ -70,20 +74,20 @@ export default function Camera() {
     return ref.put(blob);
   };
 
-  const submitPhoto = async () => {
-    uploadImage(image, "test-image")
-      .then(() => {
-        Alert.alert("Success!");
-      })
-      .catch((error) => {
-        Alert.alert(error.message);
-      });
-  };
+  // const submitPhoto = async () => {
+  //   uploadImage(image, "test-image")
+  //     .then(() => {
+  //       Alert.alert("Success!");
+  //     })
+  //     .catch((error) => {
+  //       Alert.alert(error.message);
+  //     });
+  // };
 
   const { register, handleSubmit, setValue } = useForm();
 
   useEffect(() => {
-    register("imageName");
+    register("imageName", "imageSize");
   }, [register]);
 
   const onSubmit = (data) => {
@@ -100,9 +104,13 @@ export default function Camera() {
           db.collection("items").add({
             name: data.imageName,
             url: url,
-            size: "test",
+            size: selectedSize,
+            type: selectedType,
+            condition: selectedCondition,
             owner: user.displayName,
           });
+          Alert.alert("Item added!");
+          setImage(null);
         });
       })
       .catch((error) => {
@@ -120,27 +128,97 @@ export default function Camera() {
           <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
           <Text>Image name:</Text>
           <TextInput
+            style={styles.textBox}
             onChangeText={(text) => {
               setValue("imageName", text);
             }}
           />
-          <Button title="Submit" onPress={handleSubmit(onSubmit)} />
-          <Button title="Clear" onPress={() => setImage(!image)} />
+
+          <Picker
+            style={{ height: 50, width: 150 }}
+            selectedValue={selectedType}
+            onValueChange={(itemValue, itemIndex) => setSelectedType(itemValue)}
+          >
+            <Picker.Item label="Accessories" value="accessories" />
+            <Picker.Item label="Top" value="top" />
+            <Picker.Item label="Outerwear" value="outerwear" />
+            <Picker.Item label="Bottoms" value="bottoms" />
+            <Picker.Item label="Footwear" value="footwear" />
+          </Picker>
+
+          <Picker
+            style={{ height: 50, width: 150 }}
+            selectedValue={selectedSize}
+            onValueChange={(itemValue, itemIndex) => setSelectedSize(itemValue)}
+          >
+            <Picker.Item label="Small" value="small" />
+            <Picker.Item label="Medium" value="medium" />
+            <Picker.Item label="Large" value="large" />
+          </Picker>
+
+          <Picker
+            style={{ height: 50, width: 150 }}
+            selectedValue={selectedCondition}
+            onValueChange={(itemValue, itemIndex) =>
+              setSelectedCondition(itemValue)
+            }
+          >
+            <Picker.Item label="New" value="new" />
+            <Picker.Item label="Used: Like new" value="used: like new" />
+            <Picker.Item label="Used: Accpetable" value="used: accpetable" />
+            <Picker.Item
+              label="Used: Heavy signs of wear"
+              value="used: heavy signs of wear"
+            />
+          </Picker>
+
+          <View style={styles.buttons}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleSubmit(onSubmit)}
+            >
+              <Text>Submit</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => setImage(!image)}
+            >
+              <Text>Clear</Text>
+            </TouchableOpacity>
+          </View>
         </>
       )}
     </View>
   );
 }
 
-// export default class CameraScreen extends React.Component() {
+const styles = StyleSheet.create({
+  Camera: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttons: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+  },
 
-// const styles = StyleSheet.create({
-//   Camera: {
-//     flex: 1,
-//     backgroundColor: "#fff",
-//     alignItems: "center",
-//     justifyContent: "center",
-//   },
-// });
+  button: {
+    margin: 5,
+    color: "blue",
+    backgroundColor: "#1E90FF",
+    padding: 10,
+    borderRadius: 5,
+  },
 
-// export default CameraScreen;
+  textBox: {
+    backgroundColor: "grey",
+    color: "red",
+    borderBottomColor: "red",
+    paddingRight: 100,
+    marginBottom: 10,
+    marginTop: 10,
+  },
+});
