@@ -1,83 +1,78 @@
-import React, { useEffect, useReducer, useContext } from "react";
-import { Button, StyleSheet, TextInput, View, FlatList, SafeAreaView, } from "react-native";
-import { Text } from "react-native-elements";
-import { firebaseService } from '../services'
-import Input from './Input';
-import ChatTest from './ChatTest'
-import { messagesReducer } from './reducer'
+import React from "react";
+import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import firebase from "../firebase-config";
 
-function MessageScreen() {
-  const mock = [
-    { id: 1, message: 'Hello', side: 'left' },
-    { id: 2, message: 'Hi!', side: 'right' },
+export default function Message({ message, side, user }) {
+  let isLeftSide;
+  if (side === "left") {
+    isLeftSide = true;
+  } else {
+    isLeftSide = false;
+  }
 
-  ]
-
-  const user = firebase.auth().currentUser;
-  const userName = user.displayName
-
-  const [messages, dispatchMessages] = useReducer(messagesReducer, [])
-
-  useEffect(
-    function () {
-      return firebaseService.messageRef
-        .orderBy('created_at', 'desc')
-        .onSnapshot(function (snapshot) {
-          dispatchMessages({ type: 'add', payload: snapshot.docs })
-        })
-    },
-    [false]
-  )
+  const containerStyles = isLeftSide
+    ? styles.container
+    : flattenedStyles.container;
+  const textContainerStyles = isLeftSide
+    ? styles.textContainer
+    : flattenedStyles.textContainer;
+  const textStyles = isLeftSide
+    ? flattenedStyles.leftText
+    : flattenedStyles.rightText;
 
   return (
-
-    <SafeAreaView>
-      <View style={styles.messagesContainer}>
-        <FlatList
-          inverted
-          data={messages}
-          keyExtractor={function (item) {
-            //console.log(item, 'item')
-            return item.id
-          }}
-          renderItem={function ({ item }) {
-            const data = item.data()
-            //console.log(item.data, 'item')
-            const side = data.user_id === userName ? 'right' : 'left'
-            // const data = item.message
-            //const side = item.id === userName ? 'right' : 'left'
-            return (
-              <ChatTest side={side} message={data.message} />
-            )
-          }}
-        />
+    <View style={containerStyles}>
+      <View style={textContainerStyles}>
+        {/* //Avatar - may need it from props in Message.jsx? */}
+        <Text style={textStyles}>{user}</Text>
+        <Text style={textStyles}>{message}</Text>
       </View>
-
-      <View style={styles.inputContainer}>
-        <Input />
-      </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-
-  messagesContainer: {
-    height: '100%',
-    paddingBottom: 100
+  container: {
+    width: "100%",
+    paddingVertical: 3,
+    paddingHorizontal: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
   },
-  inputContainer: {
-    width: '100%',
-    height: 100,
-    position: 'absolute',
-    bottom: 0,
-    paddingVertical: 10,
-    paddingLeft: 20,
+  textContainer: {
+    width: 160,
+    backgroundColor: "gray",
 
-    borderTopWidth: 1,
-    borderTopColor: 'gray'
-  }
+    borderRadius: 40,
+    paddingHorizontal: 15,
+    paddingVertical: 12,
+    marginLeft: 10,
+  },
+  rightContainer: {
+    justifyContent: "flex-end",
+  },
+  rightTextContainer: {
+    backgroundColor: "lightblue",
+    marginRight: 10,
+  },
+  leftText: {
+    textAlign: "left",
+  },
+  rightText: {
+    textAlign: "right",
+  },
+  text: {
+    fontSize: 12,
+  },
 });
 
-export default MessageScreen;
+const flattenedStyles = {
+  container: StyleSheet.flatten([styles.container, styles.rightContainer]),
+  textContainer: StyleSheet.flatten([
+    styles.textContainer,
+    styles.rightTextContainer,
+  ]),
+  leftText: StyleSheet.flatten([styles.leftText, styles.text]),
+  rightText: StyleSheet.flatten([styles.rightText, styles.text]),
+};
