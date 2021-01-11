@@ -11,24 +11,42 @@ import {
 import { Text } from "react-native-elements";
 import firebase from "../firebase-config";
 import { Dimensions } from "react-native";
-const windowWidth = Dimensions.get("window").width;
-const windowHeight = Dimensions.get("window").height;
+import UserItemList from "./UserItemList";
+// const windowWidth = Dimensions.get("window").width;
+// const windowHeight = Dimensions.get("window").height;
 
 function HomeScreen() {
   const [imageUrls, setImageUrls] = useState([]);
 
-  const getImage = async (uri, imageName) => {
-    const ref = firebase.storage().ref().child("homepage-test");
-    const res = await ref.listAll();
-    Promise.all(
-      res.items.map((itemRef) => {
-        return itemRef.getDownloadURL().then((url) => {
-          return url;
+  // const getImage = async (uri, imageName) => {
+  //   const ref = firebase.storage().ref().child("homepage-test");
+  //   const res = await ref.listAll();
+  //   Promise.all(
+  //     res.items.map((itemRef) => {
+  //       return itemRef.getDownloadURL().then((url) => {
+  //         return url;
+  //       });
+  //     })
+  //   ).then((imageUrls) => {
+  //     setImageUrls(imageUrls);
+  //   });
+  // };
+  const getImage = async () => {
+    const db = firebase.firestore();
+    db.collection("items")
+      .get()
+      .then((images) => {
+        const imageArray = [];
+        images.forEach((doc) => {
+          const { owner, url } = doc.data();
+          const user = firebase.auth().currentUser;
+          if(owner != user.displayName) {
+            imageArray.push(url)
+          }
         });
-      })
-    ).then((imageUrls) => {
-      setImageUrls(imageUrls);
-    });
+        setImageUrls(imageArray);
+       // console.log("--->", imageArray);
+      });
   };
   useEffect(() => {
     getImage();
@@ -36,19 +54,13 @@ function HomeScreen() {
 
   return (
     <View style={styles.Home}>
-      <Text>homepage!</Text>
-      <FlatList
-        data={imageUrls}
-        renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => {}}>
-            <Image
-              source={{ uri: item }}
-              style={{ width: windowWidth / 3, height: windowWidth / 3 }}
-            />
-          </TouchableOpacity>
-        )}
-        numColumns={3}
-      ></FlatList>
+      <View style={styles.header}>
+        <Text>homepage!</Text>
+      </View>
+
+      <View style={styles.images}>
+        <UserItemList imageUrls={imageUrls} />
+      </View>
     </View>
   );
 }
@@ -56,10 +68,20 @@ function HomeScreen() {
 const styles = StyleSheet.create({
   Home: {
     flex: 1,
-    marginTop: 40,
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    alignItems: "stretch",
+  },
+
+  header: {
+    flex: 0.2,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+  },
+
+  images: {
+    flex: 0.8,
   },
 });
 

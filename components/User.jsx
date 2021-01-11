@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Button, StyleSheet, TextInput, View, Image, TouchableOpacity, } from 'react-native';
 import { Text } from 'react-native-elements';
 import firebase from '../firebase-config';
@@ -7,6 +7,9 @@ import UserItemList from './UserItemList';
 
 function UserScreen() {
   const { logInUser } = useContext(UserContext);
+    const [imageUrls, setImageUrls] = useState([]);
+
+
   const user = firebase.auth().currentUser;
   const signOutUser = () => {
     firebase
@@ -17,20 +20,46 @@ function UserScreen() {
       });
   };
 
+  const getImage = async () => {
+    const db = firebase.firestore();
+    db.collection("items")
+      .get()
+      .then((images) => {
+        const imageArray = [];
+        images.forEach((doc) => {
+          const { owner, url } = doc.data();
+          const user = firebase.auth().currentUser;
+          if (owner == user.displayName) {
+            imageArray.push(url);
+          }
+        });
+        setImageUrls(imageArray);
+        // console.log("--->", imageArray);
+      });
+  };
+  useEffect(() => {
+    getImage();
+  }, []);
+
   return (
     <View style={styles.User}>
       <View style={styles.userContainer}>
-        <TouchableOpacity style={styles.signOutButton} onPress={() => signOutUser()} >
+        <TouchableOpacity
+          style={styles.signOutButton}
+          onPress={() => signOutUser()}
+        >
           <Text>Sign Out</Text>
         </TouchableOpacity>
-        <Image source={{ uri: 'https://reactjs.org/logo-og.png' }} style={{ width: 150, height: 150, borderRadius: 150 }} />
+        <Image
+          source={{ uri: "https://reactjs.org/logo-og.png" }}
+          style={{ width: 150, height: 150, borderRadius: 150 }}
+        />
         <Text style={styles.userName}>{user.displayName}</Text>
-
       </View>
-
-      <UserItemList />
+      <View style={styles.images}>
+        <UserItemList imageUrls={imageUrls} />
+      </View>
     </View>
-
   );
 }
 
@@ -62,7 +91,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 5,
     backgroundColor: 'lightblue'
+  },
+
+  images: {
+    flex: 0.6,
   }
+
 });
 
 export default UserScreen;
