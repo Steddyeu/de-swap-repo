@@ -2,12 +2,14 @@ import React, { Component, useContext } from 'react';
 import { Button, TextInput, View } from 'react-native';
 import firebase from '../firebase-config';
 import { UserContext } from './context/user';
+import { Picker } from '@react-native-picker/picker';
 
 class SignUp extends Component {
   state = {
     name: '',
     email: '',
     password: '',
+    avatar: null,
   };
   onChangeText = (key, value) => {
     this.setState({ [key]: value });
@@ -54,6 +56,7 @@ class SignUp extends Component {
           onChangeText={(value) => this.onChangeText('password', value)}
           secureTextEntry={true}
         />
+
         <Button title="Sign up" onPress={this.submitSignUp} />
       </View>
     );
