@@ -13,28 +13,30 @@ import { Dimensions } from "react-native";
 import HomeScreen from "./Home";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
-class UserItemList extends Component {
- 
 
-  render() {
-    return (
-      <View style={styles.itemList}>
-        <FlatList
-          data={this.props.imageUrls}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => {}}>
-              <Image
-                source={{ uri: item }}
-                style={{ width: windowWidth / 3, height: windowWidth / 3 }}
-              />
-            </TouchableOpacity>
-          )}
-          numColumns={3}
-        ></FlatList>
-      </View>
-    );
-  }
+function UserItemList(props) {
+  return (
+    <View style={styles.itemList}>
+      <FlatList
+        data={props.imageUrls}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            onPress={() => {
+              props.navigation.navigate("Item", { itemUrl: item });
+            }}
+          >
+            <Image
+              source={{ uri: item }}
+              style={{ width: windowWidth / 3, height: windowWidth / 3 }}
+            />
+          </TouchableOpacity>
+        )}
+        numColumns={3}
+      ></FlatList>
+    </View>
+  );
 }
+
 const styles = StyleSheet.create({
   itemList: {
     flex: 1,
