@@ -9,19 +9,21 @@ export default class FirebaseService {
 
     messageRef = this.firestore.collection(collections.MESSAGES);
 
-    //   async fetchMessages() {
+    // async fetchMessages() {
     //     const messages = await this.messageRef
-    //       .orderBy("created_at", "desc")
-    //       .limit(10)
-    //       .get();
+    //         .orderBy("created_at", "desc")
+    //         .limit(10)
+    //         .get();
 
     //     return messages.docs;
-    //   }
+    // }
 
     chatID = () => {
         const user = firebase.auth().currentUser;
         const chatterID = user.displayName;
+        //chatterID=userName
         const chateeID = "angela";
+        //chateeID=userName2
         const chatIDpre = [];
         chatIDpre.push(chatterID);
         chatIDpre.push(chateeID);
@@ -30,29 +32,29 @@ export default class FirebaseService {
         return chatIDpre.join("_");
     };
 
+    // async createMessage({ message, userName }) {
+    //     await this.messageRef.add({
+    //         message,
+    //         user_id: userName,
+    //         created_at: new Date(),
+    //     });
+    // }
+
     async createMessage({ message, userName }) {
-        await this.messageRef.add({
+        await this.messageRef.doc(this.chatID()).collection("chats").add({
             message,
             user_id: userName,
             created_at: new Date(),
         });
     }
 
-    //   async createMessage({ message, userName }) {
-    //     await this.messageRef.doc(this.chatID()).collection("chats").add({
-    //       message,
-    //       user_id: userName,
-    //       created_at: new Date(),
-    //     });
-    //   }
-
-    //     async fetchMessages() {
-    //         const messages = await this.messageRef
-    //             .doc(this.chatID())
-    //             .collection("chats")
-    //             .orderBy("created_at", "desc")
-    //             .limit(10)
-    //             .get();
-    //         return messages.docs;
-    //     }
+    // async fetchMessages() {
+    //     const messages = await this.messageRef
+    //         .doc(this.chatID())
+    //         .collection("chats")
+    //         .orderBy("created_at", "desc")
+    //         .limit(10)
+    //         .get();
+    //     return messages.docs;
+    // }
 }

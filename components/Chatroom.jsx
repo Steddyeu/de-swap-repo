@@ -20,9 +20,19 @@ function MessageScreen() {
 
   const [messages, dispatchMessages] = useReducer(messagesReducer, []);
 
+  // useEffect(
+  //   function () {
+  //     return firebaseService.messageRef
+  //       .orderBy("created_at", "desc")
+  //       .onSnapshot(function (snapshot) {
+  //         dispatchMessages({ type: "add", payload: snapshot.docs });
+  //       });
+  //   },
+  //   [false]
+  // );
   useEffect(
     function () {
-      return firebaseService.messageRef
+      return firebaseService.messageRef.doc(firebaseService.chatID()).collection("chats")
         .orderBy("created_at", "desc")
         .onSnapshot(function (snapshot) {
           dispatchMessages({ type: "add", payload: snapshot.docs });
@@ -52,7 +62,7 @@ function MessageScreen() {
                 side={side}
                 message={data.message}
                 user={data.user_id}
-                // timeSent={time}
+              // timeSent={time}
               />
             );
           }}
