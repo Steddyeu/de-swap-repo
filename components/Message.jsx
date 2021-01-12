@@ -1,22 +1,78 @@
 import React from "react";
-import { Button, StyleSheet, TextInput, View } from "react-native";
-import { Text } from "react-native-elements";
+import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
+import firebase from "../firebase-config";
 
-function MessageScreen() {
+export default function Message({ message, side, user }) {
+  let isLeftSide;
+  if (side === "left") {
+    isLeftSide = true;
+  } else {
+    isLeftSide = false;
+  }
+
+  const containerStyles = isLeftSide
+    ? styles.container
+    : flattenedStyles.container;
+  const textContainerStyles = isLeftSide
+    ? styles.textContainer
+    : flattenedStyles.textContainer;
+  const textStyles = isLeftSide
+    ? flattenedStyles.leftText
+    : flattenedStyles.rightText;
+
   return (
-    <View style={styles.Message}>
-      <Text>MESSAGE!</Text>
+    <View style={containerStyles}>
+      <View style={textContainerStyles}>
+        {/* //Avatar - may need it from props in Message.jsx? */}
+        <Text style={textStyles}>{user}</Text>
+        <Text style={textStyles}>{message}</Text>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  Message: {
-    flex: 1,
-    backgroundColor: "#fff",
+  container: {
+    width: "100%",
+    paddingVertical: 3,
+    paddingHorizontal: 10,
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
+  },
+  textContainer: {
+    width: 160,
+    backgroundColor: "gray",
+
+    borderRadius: 40,
+    paddingHorizontal: 15,
+    paddingVertical: 12,
+    marginLeft: 10,
+  },
+  rightContainer: {
+    justifyContent: "flex-end",
+  },
+  rightTextContainer: {
+    backgroundColor: "lightblue",
+    marginRight: 10,
+  },
+  leftText: {
+    textAlign: "left",
+  },
+  rightText: {
+    textAlign: "right",
+  },
+  text: {
+    fontSize: 12,
   },
 });
 
-export default MessageScreen;
+const flattenedStyles = {
+  container: StyleSheet.flatten([styles.container, styles.rightContainer]),
+  textContainer: StyleSheet.flatten([
+    styles.textContainer,
+    styles.rightTextContainer,
+  ]),
+  leftText: StyleSheet.flatten([styles.leftText, styles.text]),
+  rightText: StyleSheet.flatten([styles.rightText, styles.text]),
+};
