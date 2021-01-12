@@ -7,9 +7,8 @@ import firebase from './firebase-config';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-
 import { NativeRouter, Route, Link, Switch } from 'react-router-native';
-import UserScreen from './components/User';
+import UserStackScreen from './components/User';
 import Example from './components/TestChatSetup';
 import CameraScreen from './components/Camera';
 import MessagesScreen from './components/Message';
@@ -19,7 +18,6 @@ import { auth } from 'firebase';
 import { render } from 'react-dom';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { UserContext } from './components/context/user';
-import IndividualItem from './components/IndividualItem';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -68,7 +66,7 @@ function MyTabs() {
       />
       <Tab.Screen
         name="User"
-        component={UserScreen}
+        component={UserStackScreen}
         options={{
           tabBarLabel: 'User',
           tabBarIcon: ({ color, size }) => (

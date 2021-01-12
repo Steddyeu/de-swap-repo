@@ -56,7 +56,7 @@ function HomeScreen({ navigation }) {
   return (
     <View style={styles.Home}>
       <View style={styles.header}>
-        <Text>homepage!</Text>
+        <Image source={require('../images/logo.png')} />
       </View>
       <View style={styles.images}>
         <UserItemList imageUrls={imageUrls} navigation={navigation} />

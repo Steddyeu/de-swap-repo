@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -8,11 +8,11 @@ import {
   FlatList,
   SafeAreaView,
   Text,
-} from "react-native";
-import { Dimensions } from "react-native";
-import HomeScreen from "./Home";
-const windowWidth = Dimensions.get("window").width;
-const windowHeight = Dimensions.get("window").height;
+} from 'react-native';
+import { Dimensions } from 'react-native';
+import HomeScreen from './Home';
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 function UserItemList(props) {
   return (
@@ -22,7 +22,7 @@ function UserItemList(props) {
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => {
-              props.navigation.navigate("Item", { itemUrl: item });
+              props.navigation.navigate('Item', { itemUrl: item });
             }}
           >
             <Image
