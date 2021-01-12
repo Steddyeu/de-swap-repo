@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   StyleSheet,
@@ -8,8 +8,8 @@ import {
   TouchableOpacity,
   FlatList,
   Text,
-} from "react-native";
-import firebase from "../firebase-config";
+} from 'react-native';
+import firebase from '../firebase-config';
 
 export default function IndividualItem({ route }) {
   const [itemInfo, setItemInfo] = useState({});
@@ -18,8 +18,8 @@ export default function IndividualItem({ route }) {
     const db = firebase.firestore();
     const url = route.params.itemUrl;
 
-    db.collection("items")
-      .where("url", "==", url)
+    db.collection('items')
+      .where('url', '==', url)
       .get()
       .then((item) => {
         item.forEach((doc) => {
@@ -36,10 +36,7 @@ export default function IndividualItem({ route }) {
 
   return (
     <View itemInfo={itemInfo} styles={styles.mainContainer}>
-      <Image
-        source={{ uri: itemInfo.url }}
-        style={styles.image}
-      />
+      <Image source={{ uri: itemInfo.url }} style={styles.image} />
       <View styles={styles.itemInfoContainer}>
         <Text>Owner: {itemInfo.owner}</Text>
         <Text>Size: {itemInfo.size}</Text>
@@ -72,5 +69,5 @@ const styles = StyleSheet.create({
     width: 350,
     height: 350,
     borderRadius: 150,
-  }
+  },
 });

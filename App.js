@@ -8,6 +8,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 <<<<<<< HEAD
 import { createStackNavigator } from "@react-navigation/stack";
+<<<<<<< HEAD
 =======
 import { NativeRouter, Route, Link, Switch } from "react-router-native";
 import UserScreen from "./components/User";
@@ -22,8 +23,11 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { UserContext } from "./components/context/user";
 >>>>>>> c3f1648edae2fb096d6268a4a41df3ce77e40155
 
+=======
+>>>>>>> 6289e877b8dc3f762102eeab3e0a3321e1737888
 import { NativeRouter, Route, Link, Switch } from "react-router-native";
-import UserScreen from "./components/User";
+import UserStackScreen from "./components/User";
+import Example from "./components/TestChatSetup";
 import CameraScreen from "./components/Camera";
 import MessagesScreen from "./components/Message";
 import HomeStackScreen from "./components/Home";
@@ -32,7 +36,7 @@ import { auth } from "firebase";
 import { render } from "react-dom";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { UserContext } from "./components/context/user";
-import IndividualItem from "./components/IndividualItem";
+import MessageList from "./components/MessageList";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -70,8 +74,14 @@ function MyTabs() {
       />
       <Tab.Screen
         name="Messages"
+<<<<<<< HEAD
         component={MessagesScreen}
         // component={Example}
+=======
+        //component={MessagesScreen}
+        component={MessageList}
+        // component={MessageStackScreen}
+>>>>>>> 6289e877b8dc3f762102eeab3e0a3321e1737888
         options={{
           tabBarLabel: "Messages",
           tabBarIcon: ({ color, size }) => (
@@ -81,7 +91,7 @@ function MyTabs() {
       />
       <Tab.Screen
         name="User"
-        component={UserScreen}
+        component={UserStackScreen}
         options={{
           tabBarLabel: "User",
           tabBarIcon: ({ color, size }) => (
