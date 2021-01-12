@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import firebase from "../firebase-config";
 
 export default function Message({ message, side, user }) {
+
   let isLeftSide;
   if (side === "left") {
     isLeftSide = true;
