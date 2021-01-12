@@ -17,6 +17,7 @@ import { auth } from "firebase";
 import { render } from "react-dom";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { UserContext } from "./components/context/user";
+import MessageList from "./components/MessageList";
 
 const Tab = createBottomTabNavigator();
 
@@ -54,8 +55,8 @@ function MyTabs() {
       />
       <Tab.Screen
         name="Messages"
-        component={MessagesScreen}
-        // component={Example}
+        //component={MessagesScreen}
+        component={MessageList}
         options={{
           tabBarLabel: "Messages",
           tabBarIcon: ({ color, size }) => (
@@ -110,10 +111,10 @@ class App extends Component {
             <MyTabs />
           </NavigationContainer>
         ) : (
-          <NavigationContainer>
-            <LandingStackScreen />
-          </NavigationContainer>
-        )}
+            <NavigationContainer>
+              <LandingStackScreen />
+            </NavigationContainer>
+          )}
       </UserContext.Provider>
     );
   }
