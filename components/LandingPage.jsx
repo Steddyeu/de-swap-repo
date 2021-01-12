@@ -42,8 +42,8 @@ const LandingStack = createStackNavigator();
 
 function LandingStackScreen() {
   return (
-    <LandingStack.Navigator>
-      <LandingStack.Screen name="LandingPage" component={LandingPage} />
+    <LandingStack.Navigator >
+      <LandingStack.Screen name="LandingPage" component={LandingPage} options={{ headerShown: false }} />
 
       <LandingStack.Screen name="Signup" component={SignUp} />
       <LandingStack.Screen name="Login" component={Login} />
@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   landingButton: {
+
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#DDDDDD',
