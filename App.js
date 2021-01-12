@@ -18,6 +18,7 @@ import { render } from "react-dom";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { UserContext } from "./components/context/user";
 import MessageList from "./components/MessageList";
+import MessageStackScreen from "./components/MessageList";
 
 const Tab = createBottomTabNavigator();
 
@@ -57,6 +58,7 @@ function MyTabs() {
         name="Messages"
         //component={MessagesScreen}
         component={MessageList}
+        // component={MessageStackScreen}
         options={{
           tabBarLabel: "Messages",
           tabBarIcon: ({ color, size }) => (
@@ -111,10 +113,10 @@ class App extends Component {
             <MyTabs />
           </NavigationContainer>
         ) : (
-            <NavigationContainer>
-              <LandingStackScreen />
-            </NavigationContainer>
-          )}
+          <NavigationContainer>
+            <LandingStackScreen />
+          </NavigationContainer>
+        )}
       </UserContext.Provider>
     );
   }
