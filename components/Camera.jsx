@@ -222,7 +222,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flex: 1,
     flexDirection: 'row',
-    // fontSize: '10px',
   },
 
   textBox: {
