@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 6289e877b8dc3f762102eeab3e0a3321e1737888
 import React, { Component } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import { Text } from "react-native-elements";
@@ -7,18 +10,20 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import firebase from "./firebase-config";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 import { NativeRouter, Route, Link, Switch } from "react-router-native";
-import UserScreen from "./components/User";
-import CameraScreen from "./components/Camera";
-import MessagesScreen from "./components/Chatroom";
-import HomeScreen from "./components/Home";
-import LandingStackScreen from "./components/LandingPage";
+import UserStackScreen from "./components/User";
 import Example from "./components/TestChatSetup";
+import CameraScreen from "./components/Camera";
+import MessagesScreen from "./components/Message";
+import HomeStackScreen from "./components/Home";
+import LandingStackScreen from "./components/LandingPage";
 import { auth } from "firebase";
 import { render } from "react-dom";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { UserContext } from "./components/context/user";
 import MessageList from "./components/MessageList";
+<<<<<<< HEAD
 =======
 import React, { Component } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
@@ -41,6 +46,8 @@ import { render } from 'react-dom';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { UserContext } from './components/context/user';
 >>>>>>> 99a4907af1fb21e89bea43f91b81123a0c224718
+=======
+>>>>>>> 6289e877b8dc3f762102eeab3e0a3321e1737888
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -49,14 +56,14 @@ function MyTabs() {
     <Tab.Navigator
       initialRouteName="Home"
       tabBarOptions={{
-        activeTintColor: 'darkblue',
+        activeTintColor: "darkblue",
       }}
     >
       <Tab.Screen
         name="Home"
         component={HomeStackScreen}
         options={{
-          tabBarLabel: 'Home',
+          tabBarLabel: "Home",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="twitter-retweet"
@@ -70,7 +77,7 @@ function MyTabs() {
         name="Camera"
         component={CameraScreen}
         options={{
-          tabBarLabel: 'Camera',
+          tabBarLabel: "Camera",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="camera" color={color} size={size} />
           ),
@@ -80,8 +87,9 @@ function MyTabs() {
         name="Messages"
         //component={MessagesScreen}
         component={MessageList}
+        // component={MessageStackScreen}
         options={{
-          tabBarLabel: 'Messages',
+          tabBarLabel: "Messages",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="email" color={color} size={size} />
           ),
@@ -91,7 +99,7 @@ function MyTabs() {
         name="User"
         component={UserStackScreen}
         options={{
-          tabBarLabel: 'User',
+          tabBarLabel: "User",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
@@ -134,10 +142,10 @@ class App extends Component {
             <MyTabs />
           </NavigationContainer>
         ) : (
-            <NavigationContainer>
-              <LandingStackScreen />
-            </NavigationContainer>
-          )}
+          <NavigationContainer>
+            <LandingStackScreen />
+          </NavigationContainer>
+        )}
       </UserContext.Provider>
     );
   }

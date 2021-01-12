@@ -1,92 +1,102 @@
 import firebase from "../firebase-config";
-import { Text, View } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { Text, View } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 import { firebaseService } from "../services";
 import React, { useEffect, useReducer, useContext, useState } from "react";
 import { firestore } from "firebase";
-import { List, Divider } from 'react-native-paper';
+import { List, Divider } from "react-native-paper";
+import MessageScreen from "./Chatroom";
+import { createStackNavigator } from "@react-navigation/stack";
 
-const MessageList = () => {
-    const [messageArray, setMessageArray] = useState([]);
-    const [threads, setThreads] = useState([]);
-    const [loading, setLoading] = useState(true);
+const MessageList = ({ navigation }) => {
+  const [messageArray, setMessageArray] = useState([]);
+  const [threads, setThreads] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    const getMessage = async () => {
-        const db = firebase.firestore()
-        db.collection('messages').get().then(data => {
-            data.forEach((doc) => { console.log(doc.data().message) })
-        })
-    }
+  const user = firebase.auth().currentUser;
+  const userName = user.displayName;
 
+  const getMessage = async () => {
+    const db = firebase.firestore();
+    db.collection("messages")
+      .get()
+      .then((data) => {
+        data.forEach((doc) => {
+          console.log(doc.data());
+        });
+      });
+  };
 
-    useEffect(() => {
-        const unsubscribe = firestore()
-            .collection('messages')
-            .doc('angela_angela')
-            .onSnapshot((querySnapshot) => {
-                const threads = querySnapshot.docs.map((documentSnapshot) => {
-                    return {
-                        _id: documentSnapshot.id,
-                        // give defaults
-                        name: '',
-                        ...documentSnapshot.data(),
-                    };
-                });
+  useEffect(() => {
+    // getMessage();
+    const myMessages = firestore()
+      .collection("messages")
+      .onSnapshot((querySnapshot) => {
+        const threads = querySnapshot.docs.map((documentSnapshot) => {
+          return {
+            // _id: documentSnapshot.id,
+            // // give defaults
+            // name: "",
+            // ...documentSnapshot.data(),
 
-                setThreads(threads);
+            _id: documentSnapshot.id,
+            name: "User Chat",
+            ...documentSnapshot.data(),
+          };
+        });
 
-                if (loading) {
-                    setLoading(false);
-                }
-            });
+        setThreads(threads);
 
-        /**
-         * unsubscribe listener
-         */
-        return () => unsubscribe();
-    }, []);
+        if (loading) {
+          setLoading(false);
+        }
+      });
 
-    return (
+    /**
+     * unsubscribe listener
+     */
+    return () => myMessages();
+  }, []);
 
-        < View >
-            {}
-            <FlatList
-                data={threads}
-                keyExtractor={(item) => item._id}
-                ItemSeparatorComponent={() => <Divider />}
-                renderItem={({ item }) => (
-                    console.log(item)
-                    // < List.Item
-                    //     title={item.name}
-                    //     description={item.doc}
-                    //     titleNumberOfLines={1}
-                    //     descriptionNumberOfLines={1}
-                    // />
-                )}
-            />
-        </View >
-    )
-    
-    // return (
-    //         <View >
-    //             <FlatList
-    //                 data={threads}
-    //                 keyExtractor={(item) => item._id}
-    //                 ItemSeparatorComponent={() => <Divider />}
-    //                 renderItem={({ item }) => (
-    //                     <List.Item
-    //                         title={item.name}
-    //                         description='Item description'
-    //                         titleNumberOfLines={1}
-    //                         descriptionNumberOfLines={1}
-    //                     />
-    //                 )}
-    //             />
-    //         </View>
+  const handlePress = () => {
+    console.log("I've been pressed");
+    navigation.navigate("Chatroom");
+  };
 
-        //               );
-        
-    
+  return (
+    <View>
+      <FlatList
+        data={threads}
+        keyExtractor={(item) => item._id}
+        ItemSeparatorComponent={() => <Divider />}
+        renderItem={({ item }) => (
+          //   console.log(item)
+          <List.Item
+            title={item._id}
+            description={item.id}
+            titleNumberOfLines={1}
+            descriptionNumberOfLines={1}
+            onPress={handlePress}
+          />
+        )}
+      />
+    </View>
+  );
+};
 
-                    }
-export default MessageList;
+const MessageStack = createStackNavigator();
+
+export default function MessageStackScreen() {
+  return (
+    <MessageStack.Navigator>
+      <MessageStack.Screen name="My Messages" component={MessageList} />
+      <MessageStack.Screen
+        name="Chatroom"
+        component={MessageScreen}
+        options={{ headerShown: false }}
+      />
+    </MessageStack.Navigator>
+  );
+}
+
+// export default MessageList;
