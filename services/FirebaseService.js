@@ -22,7 +22,7 @@ export default class FirebaseService {
         const user = firebase.auth().currentUser;
         const chatterID = user.displayName;
         //chatterID=userName
-        const chateeID = "angela";
+        const chateeID = "liam";
         //chateeID=userName2
         const chatIDpre = [];
         chatIDpre.push(chatterID);
@@ -32,13 +32,7 @@ export default class FirebaseService {
         return chatIDpre.join("_");
     };
 
-    // async createMessage({ message, userName }) {
-    //     await this.messageRef.add({
-    //         message,
-    //         user_id: userName,
-    //         created_at: new Date(),
-    //     });
-    // }
+
 
     async createMessage({ message, userName }) {
         await this.messageRef.doc(this.chatID()).collection("chats").add({
