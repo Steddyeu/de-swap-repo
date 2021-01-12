@@ -12,25 +12,26 @@ import { Text } from "react-native-elements";
 import firebase from "../firebase-config";
 import { Dimensions } from "react-native";
 import UserItemList from "./UserItemList";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import IndividualItem from "./IndividualItem";
 // const windowWidth = Dimensions.get("window").width;
 // const windowHeight = Dimensions.get("window").height;
 
-function HomeScreen() {
+const HomeStack = createStackNavigator();
+
+function HomeStackScreen() {
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen name="Home" component={HomeScreen} />
+      <HomeStack.Screen name="Item" component={IndividualItem} />
+    </HomeStack.Navigator>
+  );
+}
+
+function HomeScreen({ navigation }) {
   const [imageUrls, setImageUrls] = useState([]);
 
-  // const getImage = async (uri, imageName) => {
-  //   const ref = firebase.storage().ref().child("homepage-test");
-  //   const res = await ref.listAll();
-  //   Promise.all(
-  //     res.items.map((itemRef) => {
-  //       return itemRef.getDownloadURL().then((url) => {
-  //         return url;
-  //       });
-  //     })
-  //   ).then((imageUrls) => {
-  //     setImageUrls(imageUrls);
-  //   });
-  // };
   const getImage = async () => {
     const db = firebase.firestore();
     db.collection("items")
@@ -40,12 +41,12 @@ function HomeScreen() {
         images.forEach((doc) => {
           const { owner, url } = doc.data();
           const user = firebase.auth().currentUser;
-          if(owner != user.displayName) {
-            imageArray.push(url)
+          if (owner != user.displayName) {
+            imageArray.push(url);
           }
         });
         setImageUrls(imageArray);
-       // console.log("--->", imageArray);
+        // console.log("--->", imageArray);
       });
   };
   useEffect(() => {
@@ -57,9 +58,8 @@ function HomeScreen() {
       <View style={styles.header}>
         <Text>homepage!</Text>
       </View>
-
       <View style={styles.images}>
-        <UserItemList imageUrls={imageUrls} />
+        <UserItemList imageUrls={imageUrls} navigation={navigation}/>
       </View>
     </View>
   );
@@ -85,4 +85,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default HomeStackScreen;

@@ -1,37 +1,40 @@
-import React, { Component } from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
-import { Text } from 'react-native-elements';
-import { Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import firebase from './firebase-config';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NativeRouter, Route, Link, Switch } from 'react-router-native';
-import UserScreen from './components/User';
-import CameraScreen from './components/Camera';
-import MessagesScreen from './components/Message';
-import HomeScreen from './components/Home';
-import LandingStackScreen from './components/LandingPage';
-import { auth } from 'firebase';
-import { render } from 'react-dom';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { UserContext } from './components/context/user';
+import React, { Component } from "react";
+import { StyleSheet, TextInput, View } from "react-native";
+import { Text } from "react-native-elements";
+import { Button } from "react-native-elements";
+import Icon from "react-native-vector-icons/FontAwesome";
+import firebase from "./firebase-config";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
+
+import { NativeRouter, Route, Link, Switch } from "react-router-native";
+import UserScreen from "./components/User";
+import CameraScreen from "./components/Camera";
+import MessagesScreen from "./components/Message";
+import HomeStackScreen from "./components/Home";
+import LandingStackScreen from "./components/LandingPage";
+import { auth } from "firebase";
+import { render } from "react-dom";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { UserContext } from "./components/context/user";
+import IndividualItem from "./components/IndividualItem";
 
 const Tab = createBottomTabNavigator();
-
+const Stack = createStackNavigator();
 function MyTabs() {
   return (
     <Tab.Navigator
       initialRouteName="Home"
       tabBarOptions={{
-        activeTintColor: 'darkblue',
+        activeTintColor: "darkblue",
       }}
     >
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeStackScreen}
         options={{
-          tabBarLabel: 'Home',
+          tabBarLabel: "Home",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
@@ -41,7 +44,7 @@ function MyTabs() {
         name="Camera"
         component={CameraScreen}
         options={{
-          tabBarLabel: 'Camera',
+          tabBarLabel: "Camera",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="camera" color={color} size={size} />
           ),
@@ -51,7 +54,7 @@ function MyTabs() {
         name="Messages"
         component={MessagesScreen}
         options={{
-          tabBarLabel: 'Messages',
+          tabBarLabel: "Messages",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="email" color={color} size={size} />
           ),
@@ -61,7 +64,7 @@ function MyTabs() {
         name="User"
         component={UserScreen}
         options={{
-          tabBarLabel: 'User',
+          tabBarLabel: "User",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
@@ -104,10 +107,10 @@ class App extends Component {
             <MyTabs />
           </NavigationContainer>
         ) : (
-            <NavigationContainer>
-              <LandingStackScreen />
-            </NavigationContainer>
-          )}
+          <NavigationContainer>
+            <LandingStackScreen />
+          </NavigationContainer>
+        )}
       </UserContext.Provider>
     );
   }
