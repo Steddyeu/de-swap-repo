@@ -68,16 +68,16 @@ function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   Home: {
     flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'stretch',
+    backgroundColor: "#ccdfff",
+    justifyContent: "center",
+    alignItems: "stretch",
   },
 
   header: {
     flex: 0.2,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   images: {

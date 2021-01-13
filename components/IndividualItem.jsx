@@ -44,16 +44,18 @@ export default function IndividualItem({ route }) {
           }}
           style={styles.avatar}
         />{" "}
-        {itemInfo.owner}'s item
+        - {itemInfo.owner}'s item
       </Text>
       <View style={styles.imageContainer}>
         <Image source={{ uri: itemInfo.url }} style={styles.image} />
       </View>
       <View style={styles.itemInfoContainer}>
-        <Text style={styles.textItem}>
-          <Text style={styles.label}>Name: </Text> {itemInfo.name}
-          <Text style={styles.label}> Size: </Text> {itemInfo.size}
-        </Text>
+        <View>
+          <Text style={styles.textItem}>
+            <Text style={styles.label}>Name: </Text> {itemInfo.name}
+            <Text style={styles.label}> Size: </Text> {itemInfo.size}
+          </Text>
+        </View>
 
         <Text style={styles.textItem}>
           <Text style={styles.label}>Condition: </Text>
@@ -71,7 +73,7 @@ export default function IndividualItem({ route }) {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    backgroundColor: "#87CEFA",
+    backgroundColor: "#ccdfff",
     flex: 1,
   },
 
@@ -92,13 +94,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   owner: {
-    marginRight: "auto",
     fontSize: 25,
-    fontStyle: "italic",
-    paddingBottom: 10,
-    backgroundColor: "#87CEFA",
+    fontWeight: "bold",
+    paddingBottom: 20,
+    backgroundColor: "#ccdfff",
     color: "black",
     marginLeft: 10,
+    alignItems: "center",
   },
   imageContainer: {
     backgroundColor: "white",

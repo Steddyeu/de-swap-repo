@@ -67,7 +67,7 @@ function UserScreen({ navigation }) {
           style={styles.signOutButton}
           onPress={() => signOutUser()}
         >
-          <Text>Sign Out</Text>
+          <Text style={{color: 'white', }}>Sign Out</Text>
         </TouchableOpacity>
         <Image
           source={{
@@ -88,28 +88,27 @@ function UserScreen({ navigation }) {
 const styles = StyleSheet.create({
   User: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
+    backgroundColor: "#ccdfff",
+    alignItems: "stretch",
+    justifyContent: "flex-start",
   },
   userContainer: {
-    marginTop: 40,
     flex: 0.4,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'lightblue',
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#66a3ff",
+    borderBottomWidth: 2,
+    borderBottomColor: "#3385ff",
   },
   userName: {
     marginTop: 10,
-    textTransform: 'capitalize',
+    textTransform: "capitalize",
   },
   signOutButton: {
-    borderColor: 'black',
-    borderWidth: 2,
     marginLeft: 300,
-    borderRadius: 5,
-    padding: 5,
-    backgroundColor: 'lightblue',
+    borderRadius: 40,
+    padding: 10,
+    backgroundColor: "#1E90FF",
   },
 
   images: {
