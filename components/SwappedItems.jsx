@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Button, StyleSheet, TextInput, View, Image, Text } from 'react-native';
-import firebase from '../firebase-config';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import React, { useState, useEffect } from "react";
+import { Button, StyleSheet, TextInput, View, Image, Text } from "react-native";
+import firebase from "../firebase-config";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function SwappedItems() {
   const [swaps, setSwaps] = useState([]);
@@ -9,8 +9,8 @@ export default function SwappedItems() {
 
   const getSwappedItems = async () => {
     const db = firebase.firestore();
-    db.collection('swapped')
-      .where('owner', '==', user.displayName)
+    db.collection("swapped")
+      .where("owner", "==", user.displayName)
       .get()
       .then((data) => {
         const swapsArray = [];
@@ -38,15 +38,17 @@ export default function SwappedItems() {
             <Image
               source={{ uri: swap.url }}
               style={{ width: 100, height: 100 }}
+              key={swap.url}
             ></Image>
             <MaterialCommunityIcons
               name="twitter-retweet"
-              color={'darkblue'}
+              color={"darkblue"}
               size={100}
             />
             <Image
               source={{ uri: swap.swappedForUrl }}
               style={{ width: 100, height: 100 }}
+              key={swap.url}
             ></Image>
           </View>
         );
@@ -57,18 +59,18 @@ export default function SwappedItems() {
 
 const styles = StyleSheet.create({
   swappedContainer: {
-    justifyContent: 'flex-start',
+    justifyContent: "flex-start",
     marginTop: 40,
   },
 
   header: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 30,
   },
 
   swapListContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginTop: 30,
   },
 });
