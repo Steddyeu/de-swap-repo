@@ -14,9 +14,10 @@ import Message from "./Message";
 import { messagesReducer } from "./reducer";
 import firebase from "../firebase-config";
 
-function MessageScreen() {
+function MessageScreen({ route }) {
   const user = firebase.auth().currentUser;
   const userName = user.displayName;
+  const userName2 = route.params.secondUser
 
   const [messages, dispatchMessages] = useReducer(messagesReducer, []);
 
@@ -30,9 +31,10 @@ function MessageScreen() {
   //   },
   //   [false]
   // );
+
   useEffect(
     function () {
-      return firebaseService.messageRef.doc(firebaseService.chatID()).collection("chats")
+      return firebaseService.messageRef.doc(firebaseService.chatID(userName2)).collection("chats")
         .orderBy("created_at", "desc")
         .onSnapshot(function (snapshot) {
           dispatchMessages({ type: "add", payload: snapshot.docs });
@@ -70,7 +72,7 @@ function MessageScreen() {
       </View>
 
       <View style={styles.inputContainer}>
-        <Input />
+        <Input userName2={userName2} />
       </View>
     </SafeAreaView>
   );

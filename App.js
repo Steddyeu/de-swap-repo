@@ -1,25 +1,28 @@
-import React, { Component } from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
-import { Text } from 'react-native-elements';
-import { Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import firebase from './firebase-config';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
-import { NativeRouter, Route, Link, Switch } from 'react-router-native';
-import UserStackScreen from './components/User';
-import Example from './components/TestChatSetup';
-import CameraScreen from './components/Camera';
-import MessagesScreen from './components/Message';
-import HomeStackScreen from './components/Home';
-import LandingStackScreen from './components/LandingPage';
-import { auth } from 'firebase';
-import { render } from 'react-dom';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { UserContext } from './components/context/user';
-import MessageList from './components/MessageList';
+
+import React, { Component } from "react";
+import { StyleSheet, TextInput, View } from "react-native";
+import { Text } from "react-native-elements";
+import { Button } from "react-native-elements";
+import Icon from "react-native-vector-icons/FontAwesome";
+import firebase from "./firebase-config";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
+import { NativeRouter, Route, Link, Switch } from "react-router-native";
+import UserStackScreen from "./components/User";
+import Example from "./components/TestChatSetup";
+import CameraScreen from "./components/Camera";
+import MessagesScreen from "./components/Message";
+import HomeStackScreen from "./components/Home";
+import LandingStackScreen from "./components/LandingPage";
+import { auth } from "firebase";
+import { render } from "react-dom";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { UserContext } from "./components/context/user";
+import MessageList from "./components/MessageList";
 import SwappedItems from './components/SwappedItems';
+
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -124,10 +127,10 @@ class App extends Component {
             <MyTabs />
           </NavigationContainer>
         ) : (
-          <NavigationContainer>
-            <LandingStackScreen />
-          </NavigationContainer>
-        )}
+            <NavigationContainer>
+              <LandingStackScreen />
+            </NavigationContainer>
+          )}
       </UserContext.Provider>
     );
   }
