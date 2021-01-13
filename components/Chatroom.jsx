@@ -1,21 +1,22 @@
-import React, { useEffect, useReducer, useContext, useState } from "react";
+import React, { useEffect, useReducer, useContext, useState } from 'react';
 import {
   Button,
   StyleSheet,
   TextInput,
+  TouchableOpacity,
   View,
   FlatList,
   SafeAreaView,
   Image,
-} from "react-native";
-import { Text } from "react-native-elements";
-import { firebaseService } from "../services";
-import Input from "./Input";
-import Message from "./Message";
-import { messagesReducer } from "./reducer";
-import firebase from "../firebase-config";
+} from 'react-native';
+import { Text } from 'react-native-elements';
+import { firebaseService } from '../services';
+import Input from './Input';
+import Message from './Message';
+import { messagesReducer } from './reducer';
+import firebase from '../firebase-config';
 
-function MessageScreen({ route }) {
+function MessageScreen({ route, navigation }) {
   const user = firebase.auth().currentUser;
   const userName = user.displayName;
   const userName2 = route.params.secondUser;
@@ -54,15 +55,15 @@ function MessageScreen({ route }) {
     function () {
       const messagesPromise = firebaseService.messageRef
         .doc(firebaseService.chatID(userName2))
-        .collection("chats")
-        .orderBy("created_at", "desc")
+        .collection('chats')
+        .orderBy('created_at', 'desc')
         .onSnapshot(function (snapshot) {
-          dispatchMessages({ type: "add", payload: snapshot.docs });
+          dispatchMessages({ type: 'add', payload: snapshot.docs });
         });
 
       const itemsPromise = firebaseService.messageRef
         .doc(firebaseService.chatID(userName2))
-        .collection("images")
+        .collection('images')
         .get()
         .then((data) => {
           const items = {};
@@ -83,16 +84,29 @@ function MessageScreen({ route }) {
     <SafeAreaView>
       <View style={styles.messagesContainer}>
         {!loadingImages && (
-          <>
+          <View style={styles.imageContainer}>
             <Image
               source={{ uri: items[userName] }}
-              style={{ width: 50, height: 50 }}
+              style={{
+                width: 100,
+                height: 100,
+                borderRadius: 50,
+                marginRight: 'auto',
+                marginLeft: 10,
+                marginTop: 10,
+              }}
             />
             <Image
               source={{ uri: items[userName2] }}
-              style={{ width: 50, height: 50 }}
+              style={{
+                width: 100,
+                height: 100,
+                borderRadius: 50,
+                marginRight: 10,
+                marginTop: 10,
+              }}
             />
-          </>
+          </View>
         )}
 
         <FlatList
@@ -104,7 +118,7 @@ function MessageScreen({ route }) {
           }}
           renderItem={function ({ item }) {
             const data = item.data();
-            const side = data.user_id === userName ? "right" : "left";
+            const side = data.user_id === userName ? 'right' : 'left';
 
             // const time = formatAMPM(new Date());
 
@@ -123,6 +137,16 @@ function MessageScreen({ route }) {
       <View style={styles.inputContainer}>
         <Input userName2={userName2} />
         <View></View>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('OtherUser', {
+              screen: 'OtherUser',
+              params: { user: userName2 },
+            });
+          }}
+        >
+          <Text>View {userName2}'items</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -130,19 +154,23 @@ function MessageScreen({ route }) {
 
 const styles = StyleSheet.create({
   messagesContainer: {
-    height: "100%",
+    height: '100%',
     paddingBottom: 100,
   },
+
+  imageContainer: {
+    flexDirection: 'row',
+  },
   inputContainer: {
-    width: "100%",
+    width: '100%',
     height: 100,
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
     paddingVertical: 10,
     paddingLeft: 20,
 
     borderTopWidth: 1,
-    borderTopColor: "gray",
+    borderTopColor: 'gray',
   },
 });
 

@@ -1,12 +1,13 @@
-import firebase from "../firebase-config";
-import { Text, View } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
-import { firebaseService } from "../services";
-import React, { useEffect, useReducer, useContext, useState } from "react";
-import { firestore } from "firebase";
-import { List, Divider } from "react-native-paper";
-import MessageScreen from "./Chatroom";
-import { createStackNavigator } from "@react-navigation/stack";
+import firebase from '../firebase-config';
+import { Text, View } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+import { firebaseService } from '../services';
+import React, { useEffect, useReducer, useContext, useState } from 'react';
+import { firestore } from 'firebase';
+import { List, Divider } from 'react-native-paper';
+import MessageScreen from './Chatroom';
+import { createStackNavigator } from '@react-navigation/stack';
+import OtherUserScreen from './OtherUser';
 
 const MessageList = ({ navigation }) => {
   const [messageArray, setMessageArray] = useState([]);
@@ -18,7 +19,7 @@ const MessageList = ({ navigation }) => {
 
   const getMessage = async () => {
     const db = firebase.firestore();
-    db.collection("messages")
+    db.collection('messages')
       .get()
       .then((data) => {
         data.forEach((doc) => {
@@ -30,11 +31,11 @@ const MessageList = ({ navigation }) => {
   useEffect(() => {
     // getMessage();
     const myMessages = firestore()
-      .collection("messages")
+      .collection('messages')
       //.orderBy('chat_id')
       //.startAt('yu')
       //.endAt('yu\uf8ff')
-      .where("users", "array-contains", userName)
+      .where('users', 'array-contains', userName)
       .onSnapshot((querySnapshot) => {
         const threads = querySnapshot.docs.map((documentSnapshot) => {
           return {
@@ -44,7 +45,7 @@ const MessageList = ({ navigation }) => {
             // ...documentSnapshot.data(),
 
             _id: documentSnapshot.id,
-            name: "User Chat",
+            name: 'User Chat',
             ...documentSnapshot.data(),
           };
         });
@@ -63,7 +64,7 @@ const MessageList = ({ navigation }) => {
     const secondUser = item.users.filter((user) => {
       return user !== userName;
     });
-    navigation.navigate("Chatroom", { secondUser: secondUser[0] });
+    navigation.navigate('Chatroom', { secondUser: secondUser[0] });
   };
 
   return (
@@ -94,6 +95,7 @@ export default function MessageStackScreen() {
     <MessageStack.Navigator>
       <MessageStack.Screen name="My Messages" component={MessageList} />
       <MessageStack.Screen name="Chatroom" component={MessageScreen} />
+      <MessageStack.Screen name="OtherUser" component={OtherUserScreen} />
     </MessageStack.Navigator>
   );
 }
