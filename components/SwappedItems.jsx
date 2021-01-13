@@ -37,7 +37,7 @@ export default function SwappedItems() {
           <View style={styles.swapListContainer}>
             <Image
               source={{ uri: swap.url }}
-              style={{ width: 100, height: 100 }}
+              style={{ width: 140, height: 140 }}
               key={swap.url}
             ></Image>
             <MaterialCommunityIcons
@@ -47,7 +47,7 @@ export default function SwappedItems() {
             />
             <Image
               source={{ uri: swap.swappedForUrl }}
-              style={{ width: 100, height: 100 }}
+              style={{ width: 140, height: 140 }}
               key={swap.url}
             ></Image>
           </View>
@@ -59,13 +59,17 @@ export default function SwappedItems() {
 
 const styles = StyleSheet.create({
   swappedContainer: {
+    flex: 1,
     justifyContent: "flex-start",
     marginTop: 40,
+    backgroundColor: "#ccdfff",
   },
 
   header: {
     textAlign: "center",
-    fontSize: 30,
+    fontSize: 35,
+    color: "#000080",
+    fontWeight: 'bold',
   },
 
   swapListContainer: {
