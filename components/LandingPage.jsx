@@ -16,24 +16,24 @@ import { createStackNavigator } from '@react-navigation/stack';
 function LandingPage({ navigation }) {
   return (
     <View style={styles.landingPage}>
-      <Image source={require('../images/logo.png')} />
+      <Image source={require("../images/logo.png")} />
       <TouchableOpacity
         style={styles.landingButton}
         raised
         // title="Sign Up"
         icon={<Icon name="user" size={25} color="white" />}
-        onPress={() => navigation.navigate('Signup')}
+        onPress={() => navigation.navigate("Signup")}
       >
-        <Text>Sign Up</Text>
+        <Text style={styles.text}>Sign Up</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.landingButton}
         raised
         // title="Log In"
         icon={<Icon name="arrow-right" size={20} color="white" />}
-        onPress={() => navigation.navigate('Login')}
+        onPress={() => navigation.navigate("Login")}
       >
-        <Text>Log In</Text>
+        <Text style={styles.text}>Log In</Text>
       </TouchableOpacity>
     </View>
   );
@@ -54,18 +54,21 @@ function LandingStackScreen() {
 const styles = StyleSheet.create({
   landingPage: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#ccdfff",
+    alignItems: "center",
+    justifyContent: "center",
   },
   landingButton: {
-
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#DDDDDD',
+    backgroundColor: "#1E90FF",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 40,
     padding: 10,
     marginTop: 10,
-    width: '70%',
+    width: "70%",
+  },
+  text: {
+    color: "whitesmoke",
   },
 });
 
