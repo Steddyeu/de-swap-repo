@@ -12,6 +12,7 @@ import {
 import firebase from "../firebase-config";
 import { createStackNavigator } from "@react-navigation/stack";
 import MessageScreen from "./Chatroom";
+import { firebaseService } from "../services";
 
 function IndividualItem({ route, navigation }) {
   const [itemInfo, setItemInfo] = useState({});
@@ -42,10 +43,11 @@ function IndividualItem({ route, navigation }) {
     const itemOwner = itemInfo.owner;
 
     const db = firebase.firestore();
-    db.collection("inSwapChat")
-      .add({
-        currentUser: itemInfo.url,
-      })
+    db.collection("messages")
+      .doc(firebaseService.chatID(itemOwner))
+      .collection("images")
+      .doc(currentUser)
+      .set({ imageURL: itemInfo.url })
       .then(
         navigation.navigate("Chatroom", {
           secondUser: itemOwner,
