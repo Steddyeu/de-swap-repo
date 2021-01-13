@@ -10,29 +10,41 @@ import {
   Text,
 } from "react-native";
 import firebase from "../firebase-config";
+import { createStackNavigator } from "@react-navigation/stack";
+import MessageScreen from "./Chatroom";
 
-export default function IndividualItem({ route }) {
+
+function IndividualItem({ route, navigation }) {
   const [itemInfo, setItemInfo] = useState({});
-
   const getItem = async () => {
     const db = firebase.firestore();
     const url = route.params.itemUrl;
-
     db.collection("items")
       .where("url", "==", url)
       .get()
       .then((item) => {
         item.forEach((doc) => {
+
           const { owner, url, size, condition, name, type } = doc.data();
           const itemData = { owner, url, size, condition, name, type };
           setItemInfo(itemData);
-          console.log(itemInfo);
+          //console.log(itemInfo);
         });
       });
   };
   useEffect(() => {
     getItem();
+
   }, []);
+
+  //for message app
+  const handlePress = () => {
+    const user = firebase.auth().currentUser;
+    const currentUser = user.displayName;
+    const itemOwner = itemInfo.owner
+    navigation.navigate("Chatroom", { secondUser: itemOwner });
+  }
+
 
   return (
     <View style={styles.mainContainer}>
@@ -62,13 +74,26 @@ export default function IndividualItem({ route }) {
         </Text>
       </View>
 
-      <TouchableOpacity style={styles.buttonContainer}>
-        <Text style={styles.button}>Request to Swap</Text>
+      <TouchableOpacity style={styles.buttonContainer} onPress={handlePress}>
+        <Text style={styles.button} >Request to Swap</Text>
       </TouchableOpacity>
     </View>
   );
 }
+const IndividualItemStack = createStackNavigator();
 
+export default function IndividualItemStackScreen() {
+  return (
+    <IndividualItemStack.Navigator>
+      <IndividualItemStack.Screen name="Item" component={IndividualItem} options={{ headerShown: false }} />
+      <IndividualItemStack.Screen
+        name="Chatroom"
+        component={MessageScreen}
+        options={{ headerShown: false }}
+      />
+    </IndividualItemStack.Navigator>
+  );
+}
 const styles = StyleSheet.create({
   mainContainer: {
     backgroundColor: "#87CEFA",

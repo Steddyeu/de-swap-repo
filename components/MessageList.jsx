@@ -9,94 +9,96 @@ import MessageScreen from "./Chatroom";
 import { createStackNavigator } from "@react-navigation/stack";
 
 const MessageList = ({ navigation }) => {
-  const [messageArray, setMessageArray] = useState([]);
-  const [threads, setThreads] = useState([]);
-  const [loading, setLoading] = useState(true);
+    const [messageArray, setMessageArray] = useState([]);
+    const [threads, setThreads] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-  const user = firebase.auth().currentUser;
-  const userName = user.displayName;
+    const user = firebase.auth().currentUser;
+    const userName = user.displayName;
 
-  const getMessage = async () => {
-    const db = firebase.firestore();
-    db.collection("messages")
-      .get()
-      .then((data) => {
-        data.forEach((doc) => {
-          console.log(doc.data());
-        });
-      });
-  };
+    const getMessage = async () => {
+        const db = firebase.firestore();
+        db.collection("messages")
+            .get()
+            .then((data) => {
+                data.forEach((doc) => {
+                    console.log(doc.data());
+                });
+            });
+    };
 
-  useEffect(() => {
-    // getMessage();
-    const myMessages = firestore()
-      .collection("messages")
-      .onSnapshot((querySnapshot) => {
-        const threads = querySnapshot.docs.map((documentSnapshot) => {
-          return {
-            // _id: documentSnapshot.id,
-            // // give defaults
-            // name: "",
-            // ...documentSnapshot.data(),
+    useEffect(() => {
+        // getMessage();
+        const myMessages = firestore()
 
-            _id: documentSnapshot.id,
-            name: "User Chat",
-            ...documentSnapshot.data(),
-          };
-        });
+            .collection("messages")
+            //.orderBy('chat_id')
+            //.startAt('yu')
+            //.endAt('yu\uf8ff')
+            .where("users", "array-contains", "angela")
+            .onSnapshot((querySnapshot) => {
 
-        setThreads(threads);
+                const threads = querySnapshot.docs.map((documentSnapshot) => {
+                    return {
+                        // _id: documentSnapshot.id,
+                        // // give defaults
+                        // name: "",
+                        // ...documentSnapshot.data(),
 
-        if (loading) {
-          setLoading(false);
-        }
-      });
+                        _id: documentSnapshot.id,
+                        name: "User Chat",
+                        ...documentSnapshot.data(),
+                    };
+                });
 
-    /**
-     * unsubscribe listener
-     */
-    return () => myMessages();
-  }, []);
+                setThreads(threads);
 
-  const handlePress = () => {
-    console.log("I've been pressed");
-    navigation.navigate("Chatroom");
-  };
+                if (loading) {
+                    setLoading(false);
+                }
+            });
 
-  return (
-    <View>
-      <FlatList
-        data={threads}
-        keyExtractor={(item) => item._id}
-        ItemSeparatorComponent={() => <Divider />}
-        renderItem={({ item }) => (
-          //   console.log(item)
-          <List.Item
-            title={item._id}
-            description={item.id}
-            titleNumberOfLines={1}
-            descriptionNumberOfLines={1}
-            onPress={handlePress}
-          />
-        )}
-      />
-    </View>
-  );
+        return () => myMessages();
+    }, []);
+
+    const handlePress = () => {
+        navigation.navigate("Chatroom");
+    };
+
+    return (
+        <View>
+            <FlatList
+                data={threads}
+                keyExtractor={(item) => item._id}
+                ItemSeparatorComponent={() => <Divider />}
+                renderItem={({ item }) => (
+                    //   console.log(item)
+                    <List.Item
+                        title={item._id}
+                        description={item.id}
+                        titleNumberOfLines={1}
+                        descriptionNumberOfLines={1}
+                        onPress={handlePress}
+                    />
+                )}
+            />
+        </View>
+    );
 };
 
 const MessageStack = createStackNavigator();
 
 export default function MessageStackScreen() {
-  return (
-    <MessageStack.Navigator>
-      <MessageStack.Screen name="My Messages" component={MessageList} />
-      <MessageStack.Screen
-        name="Chatroom"
-        component={MessageScreen}
-        options={{ headerShown: false }}
-      />
-    </MessageStack.Navigator>
-  );
+    return (
+        <MessageStack.Navigator>
+            <MessageStack.Screen name="My Messages" component={MessageList} />
+            <MessageStack.Screen
+                name="Chatroom"
+                component={MessageScreen}
+                options={{ headerShown: false }}
+            />
+        </MessageStack.Navigator>
+    );
 }
 
 // export default MessageList;

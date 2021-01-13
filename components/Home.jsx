@@ -14,7 +14,7 @@ import { Dimensions } from 'react-native';
 import UserItemList from './UserItemList';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import IndividualItem from './IndividualItem';
+import IndividualItemStackScreen from './IndividualItem';
 // const windowWidth = Dimensions.get("window").width;
 // const windowHeight = Dimensions.get("window").height;
 
@@ -24,7 +24,7 @@ function HomeStackScreen() {
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen name="Home" component={HomeScreen} />
-      <HomeStack.Screen name="Item" component={IndividualItem} />
+      <HomeStack.Screen name="Item" component={IndividualItemStackScreen} />
     </HomeStack.Navigator>
   );
 }
