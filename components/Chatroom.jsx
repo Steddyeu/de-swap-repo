@@ -21,7 +21,8 @@ function MessageScreen({ route }) {
   const userName2 = route.params.secondUser;
 
   const [messages, dispatchMessages] = useReducer(messagesReducer, []);
-  const [item, addItem] = useState(null);
+  const [items, setItems] = useState({});
+  const [loadingImages, setLoadingImages] = useState(true);
 
   // useEffect(
   //   function () {
@@ -34,16 +35,46 @@ function MessageScreen({ route }) {
   //   [false]
   // );
 
+  const db = firebase.firestore();
+
+  // useEffect(
+  //   function () {
+  //     return firebaseService.messageRef
+  //       .doc(firebaseService.chatID(userName2))
+  //       .collection("chats")
+  //       .orderBy("created_at", "desc")
+  //       .onSnapshot(function (snapshot) {
+  //         dispatchMessages({ type: "add", payload: snapshot.docs });
+  //       });
+  //   },
+  //   [false]
+  // );
+
   useEffect(
     function () {
-      addItem(route.params.item_id);
-      return firebaseService.messageRef
+      const messagesPromise = firebaseService.messageRef
         .doc(firebaseService.chatID(userName2))
         .collection("chats")
         .orderBy("created_at", "desc")
         .onSnapshot(function (snapshot) {
           dispatchMessages({ type: "add", payload: snapshot.docs });
         });
+
+      const itemsPromise = firebaseService.messageRef
+        .doc(firebaseService.chatID(userName2))
+        .collection("images")
+        .get()
+        .then((data) => {
+          const items = {};
+          data.forEach((doc) => {
+            const { imageURL } = doc.data();
+
+            items[doc.id] = imageURL;
+          });
+          setItems(items);
+          setLoadingImages(false);
+        });
+      Promise.all([messagesPromise, itemsPromise]);
     },
     [false]
   );
@@ -51,7 +82,19 @@ function MessageScreen({ route }) {
   return (
     <SafeAreaView>
       <View style={styles.messagesContainer}>
-        <Image source={{ uri: item }} style={{ width: 50, height: 50 }} />
+        {!loadingImages && (
+          <>
+            <Image
+              source={{ uri: items[userName] }}
+              style={{ width: 50, height: 50 }}
+            />
+            <Image
+              source={{ uri: items[userName2] }}
+              style={{ width: 50, height: 50 }}
+            />
+          </>
+        )}
+
         <FlatList
           inverted
           data={messages}
