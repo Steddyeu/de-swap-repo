@@ -40,7 +40,23 @@ function IndividualItem({ route, navigation }) {
     const user = firebase.auth().currentUser;
     const currentUser = user.displayName;
     const itemOwner = itemInfo.owner;
-    navigation.navigate("Chatroom", { secondUser: itemOwner });
+
+    const db = firebase.firestore();
+    db.collection("inSwapChat")
+      .add({
+        currentUser: itemInfo.url,
+      })
+      .then(
+        navigation.navigate("Chatroom", {
+          secondUser: itemOwner,
+          item_id: itemInfo.url,
+        })
+      );
+
+    // navigation.navigate("Chatroom", {
+    //   secondUser: itemOwner,
+    //   item_id: itemInfo.url,
+    // });
   };
 
   return (
