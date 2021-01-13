@@ -45,8 +45,8 @@ const styles = StyleSheet.create({
     width: 160,
     backgroundColor: "gray",
 
-    borderRadius: 40,
-    paddingHorizontal: 15,
+    borderRadius: 15,
+    paddingHorizontal: 10,
     paddingVertical: 12,
     marginLeft: 10,
   },
@@ -59,13 +59,16 @@ const styles = StyleSheet.create({
   },
   leftText: {
     textAlign: "left",
+    fontSize: 12,
   },
   rightText: {
     textAlign: "right",
+    fontSize: 12,
   },
   text: {
     fontSize: 12,
   },
+
 });
 
 const flattenedStyles = {

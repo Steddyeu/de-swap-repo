@@ -35,7 +35,7 @@ const MessageList = ({ navigation }) => {
             //.orderBy('chat_id')
             //.startAt('yu')
             //.endAt('yu\uf8ff')
-            .where("users", "array-contains", "angela")
+            .where("users", "array-contains", userName)
             .onSnapshot((querySnapshot) => {
 
                 const threads = querySnapshot.docs.map((documentSnapshot) => {
@@ -61,8 +61,9 @@ const MessageList = ({ navigation }) => {
         return () => myMessages();
     }, []);
 
-    const handlePress = () => {
-        navigation.navigate("Chatroom");
+    const handlePress = (item) => {
+        console.log(item.users[1], 'user2')
+        navigation.navigate("Chatroom", { secondUser: item.users[1] });
     };
 
     return (
@@ -78,7 +79,7 @@ const MessageList = ({ navigation }) => {
                         description={item.id}
                         titleNumberOfLines={1}
                         descriptionNumberOfLines={1}
-                        onPress={handlePress}
+                        onPress={() => handlePress(item)}
                     />
                 )}
             />
@@ -93,9 +94,9 @@ export default function MessageStackScreen() {
         <MessageStack.Navigator>
             <MessageStack.Screen name="My Messages" component={MessageList} />
             <MessageStack.Screen
-                name="Chatroom"
+                name='Chatroom'
                 component={MessageScreen}
-                options={{ headerShown: false }}
+
             />
         </MessageStack.Navigator>
     );
