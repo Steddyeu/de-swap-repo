@@ -22,7 +22,7 @@ function UserItemList(props) {
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => {
-              props.navigation.navigate('Item', { itemUrl: item });
+              props.navigation.navigate('Item', { screen: 'Item', params: { itemUrl: item } });
             }}
           >
             <Image
