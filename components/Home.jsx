@@ -15,6 +15,7 @@ import UserItemList from './UserItemList';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import IndividualItem from './IndividualItem';
+import OtherUserScreen from './OtherUser';
 // const windowWidth = Dimensions.get("window").width;
 // const windowHeight = Dimensions.get("window").height;
 
@@ -25,6 +26,7 @@ function HomeStackScreen() {
     <HomeStack.Navigator>
       <HomeStack.Screen name="Home" component={HomeScreen} />
       <HomeStack.Screen name="Item" component={IndividualItem} />
+      <HomeStack.Screen name="OtherUser" component={OtherUserScreen} />
     </HomeStack.Navigator>
   );
 }
