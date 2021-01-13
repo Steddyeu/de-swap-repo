@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useContext } from "react";
+import React, { useEffect, useReducer, useContext, useState } from "react";
 import {
   Button,
   StyleSheet,
@@ -6,6 +6,7 @@ import {
   View,
   FlatList,
   SafeAreaView,
+  Image,
 } from "react-native";
 import { Text } from "react-native-elements";
 import { firebaseService } from "../services";
@@ -17,9 +18,10 @@ import firebase from "../firebase-config";
 function MessageScreen({ route }) {
   const user = firebase.auth().currentUser;
   const userName = user.displayName;
-  const userName2 = route.params.secondUser
+  const userName2 = route.params.secondUser;
 
   const [messages, dispatchMessages] = useReducer(messagesReducer, []);
+  const [item, addItem] = useState(null);
 
   // useEffect(
   //   function () {
@@ -34,7 +36,10 @@ function MessageScreen({ route }) {
 
   useEffect(
     function () {
-      return firebaseService.messageRef.doc(firebaseService.chatID(userName2)).collection("chats")
+      addItem(route.params.item_id);
+      return firebaseService.messageRef
+        .doc(firebaseService.chatID(userName2))
+        .collection("chats")
         .orderBy("created_at", "desc")
         .onSnapshot(function (snapshot) {
           dispatchMessages({ type: "add", payload: snapshot.docs });
@@ -46,6 +51,7 @@ function MessageScreen({ route }) {
   return (
     <SafeAreaView>
       <View style={styles.messagesContainer}>
+        <Image source={{ uri: item }} style={{ width: 50, height: 50 }} />
         <FlatList
           inverted
           data={messages}
@@ -64,7 +70,7 @@ function MessageScreen({ route }) {
                 side={side}
                 message={data.message}
                 user={data.user_id}
-              // timeSent={time}
+                // timeSent={time}
               />
             );
           }}
@@ -73,6 +79,7 @@ function MessageScreen({ route }) {
 
       <View style={styles.inputContainer}>
         <Input userName2={userName2} />
+        <View></View>
       </View>
     </SafeAreaView>
   );
