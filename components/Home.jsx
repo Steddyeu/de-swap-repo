@@ -14,7 +14,10 @@ import { Dimensions } from 'react-native';
 import UserItemList from './UserItemList';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+
 import IndividualItemStackScreen from './IndividualItem';
+import OtherUserScreen from './OtherUser';
+
 // const windowWidth = Dimensions.get("window").width;
 // const windowHeight = Dimensions.get("window").height;
 
@@ -24,7 +27,10 @@ function HomeStackScreen() {
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen name="Home" component={HomeScreen} />
+
       <HomeStack.Screen name="Item" component={IndividualItemStackScreen} />
+        <HomeStack.Screen name="OtherUser" component={OtherUserScreen} />
+
     </HomeStack.Navigator>
   );
 }
@@ -68,16 +74,16 @@ function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   Home: {
     flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'stretch',
+    backgroundColor: "#ccdfff",
+    justifyContent: "center",
+    alignItems: "stretch",
   },
 
   header: {
     flex: 0.2,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   images: {

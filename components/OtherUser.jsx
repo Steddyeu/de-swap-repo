@@ -14,30 +14,13 @@ import UserItemList from './UserItemList';
 import IndividualItem from './IndividualItem';
 import { createStackNavigator } from '@react-navigation/stack';
 
-const UserStack = createStackNavigator();
-
-function UserStackScreen() {
-  return (
-    <UserStack.Navigator>
-      <UserStack.Screen name="User" component={UserScreen} />
-      <UserStack.Screen name="Item" component={IndividualItem} />
-    </UserStack.Navigator>
-  );
-}
-
-function UserScreen({ navigation }) {
+function OtherUserScreen({ route, navigation }) {
   const { logInUser } = useContext(UserContext);
   const [imageUrls, setImageUrls] = useState([]);
 
-  const user = firebase.auth().currentUser;
-  const signOutUser = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        logInUser();
-      });
-  };
+  const user = route.params.params.user;
+
+  console.log(route.params.params.user, 'here');
 
   const getImage = async () => {
     const db = firebase.firestore();
@@ -46,14 +29,15 @@ function UserScreen({ navigation }) {
       .then((images) => {
         const imageArray = [];
         images.forEach((doc) => {
-          const { owner, url } = doc.data();
-          const user = firebase.auth().currentUser;
-          if (owner == user.displayName) {
+          const { url, owner } = doc.data();
+          if (owner == user) {
             imageArray.push(url);
           }
         });
         setImageUrls(imageArray);
-        // console.log("--->", imageArray);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
   useEffect(() => {
@@ -63,12 +47,6 @@ function UserScreen({ navigation }) {
   return (
     <View style={styles.User}>
       <View style={styles.userContainer}>
-        <TouchableOpacity
-          style={styles.signOutButton}
-          onPress={() => signOutUser()}
-        >
-          <Text style={{color: 'white', }}>Sign Out</Text>
-        </TouchableOpacity>
         <Image
           source={{
             uri:
@@ -76,7 +54,7 @@ function UserScreen({ navigation }) {
           }}
           style={{ width: 150, height: 150, borderRadius: 150 }}
         />
-        <Text style={styles.userName}>{user.displayName}</Text>
+        <Text style={styles.userName}>{user}</Text>
       </View>
       <View style={styles.images}>
         <UserItemList imageUrls={imageUrls} navigation={navigation} />
@@ -88,27 +66,28 @@ function UserScreen({ navigation }) {
 const styles = StyleSheet.create({
   User: {
     flex: 1,
-    backgroundColor: "#ccdfff",
-    alignItems: "stretch",
-    justifyContent: "flex-start",
+    backgroundColor: '#fff',
+    alignItems: 'stretch',
+    justifyContent: 'flex-start',
   },
   userContainer: {
+    marginTop: 40,
     flex: 0.4,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#66a3ff",
-    borderBottomWidth: 2,
-    borderBottomColor: "#3385ff",
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'lightblue',
   },
   userName: {
     marginTop: 10,
-    textTransform: "capitalize",
+    textTransform: 'capitalize',
   },
   signOutButton: {
+    borderColor: 'black',
+    borderWidth: 2,
     marginLeft: 300,
-    borderRadius: 40,
-    padding: 10,
-    backgroundColor: "#1E90FF",
+    borderRadius: 5,
+    padding: 5,
+    backgroundColor: 'lightblue',
   },
 
   images: {
@@ -116,4 +95,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UserStackScreen;
+export default OtherUserScreen;

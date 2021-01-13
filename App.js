@@ -20,6 +20,8 @@ import { render } from "react-dom";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { UserContext } from "./components/context/user";
 import MessageList from "./components/MessageList";
+import SwappedItems from './components/SwappedItems';
+
 
 
 const Tab = createBottomTabNavigator();
@@ -29,20 +31,16 @@ function MyTabs() {
     <Tab.Navigator
       initialRouteName="Home"
       tabBarOptions={{
-        activeTintColor: "darkblue",
+        activeTintColor: 'darkblue',
       }}
     >
       <Tab.Screen
         name="Home"
         component={HomeStackScreen}
         options={{
-          tabBarLabel: "Home",
+          tabBarLabel: 'Home',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="twitter-retweet"
-              color={color}
-              size={size}
-            />
+            <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
         }}
       />
@@ -50,7 +48,7 @@ function MyTabs() {
         name="Camera"
         component={CameraScreen}
         options={{
-          tabBarLabel: "Camera",
+          tabBarLabel: 'Camera',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="camera" color={color} size={size} />
           ),
@@ -62,9 +60,23 @@ function MyTabs() {
         component={MessageList}
         // component={MessageStackScreen}
         options={{
-          tabBarLabel: "Messages",
+          tabBarLabel: 'Messages',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="email" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="SwappedItems"
+        component={SwappedItems}
+        options={{
+          tabBarLabel: 'Swapped',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons
+              name="twitter-retweet"
+              color={color}
+              size={size}
+            />
           ),
         }}
       />
@@ -72,7 +84,7 @@ function MyTabs() {
         name="User"
         component={UserStackScreen}
         options={{
-          tabBarLabel: "User",
+          tabBarLabel: 'User',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
