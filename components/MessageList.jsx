@@ -66,8 +66,11 @@ const MessageList = ({ navigation }) => {
   }, []);
 
   const handlePress = (item) => {
-    console.log(item.users[1], "user2");
-    navigation.navigate("Chatroom", { secondUser: item.users[1] });
+
+    const secondUser = item.users.filter((user) => {
+      return user !== userName;
+    });
+    navigation.navigate("Chatroom", { secondUser: secondUser[0] });
   };
 
   return (
