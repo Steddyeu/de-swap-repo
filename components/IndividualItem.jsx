@@ -62,6 +62,9 @@ function IndividualItem({ route, navigation }) {
     // });
   };
 
+  const user = firebase.auth().currentUser;
+  const currentUser = user.displayName;
+
   return (
     <ScrollView style={styles.mainContainer}>
       <Text style={styles.owner}>
@@ -105,9 +108,14 @@ function IndividualItem({ route, navigation }) {
         </Text>
       </View>
 
+{
+       currentUser != itemInfo.owner && 
       <TouchableOpacity style={styles.buttonContainer} onPress={handlePress}>
         <Text style={styles.button}>Request to Swap</Text>
       </TouchableOpacity>
+       
+}
+
     </ScrollView>
   );
 }
