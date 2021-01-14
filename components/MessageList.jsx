@@ -1,5 +1,5 @@
 import firebase from "../firebase-config";
-import { Text, View } from "react-native";
+import { Text, View, Image } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { firebaseService } from "../services";
 import React, {
@@ -22,39 +22,32 @@ const MessageList = ({ navigation }) => {
   const user = firebase.auth().currentUser;
   const userName = user.displayName;
 
-  const getMessage = async () => {
-    const db = firebase.firestore();
-    db.collection("messages")
-      .get()
-      .then((data) => {
-        data.forEach((doc) => {
-          console.log(doc.data());
-        });
-      });
-  };
+  // const getMessage = async () => {
+  //   const db = firebase.firestore();
+  //   db.collection("messages")
+  //     .get()
+  //     .then((data) => {
+  //       data.forEach((doc) => {
+  //         console.log(doc.data());
+  //       });
+  //     });
+  // };
 
   useEffect(() => {
-    // getMessage();
     const myMessages = firestore()
       .collection("messages")
-      //.orderBy('chat_id')
-      //.startAt('yu')
-      //.endAt('yu\uf8ff')
       .where("users", "array-contains", userName)
       .onSnapshot((querySnapshot) => {
         const threads = querySnapshot.docs.map((documentSnapshot) => {
           return {
-            // _id: documentSnapshot.id,
-            // // give defaults
-            // name: "",
-            // ...documentSnapshot.data(),
-
-            _id: documentSnapshot.id,
-            name: "User Chat",
+            _id: documentSnapshot.data().chat_id,
+            name: documentSnapshot.data().users.filter((user) => {
+              return user !== userName;
+            }),
+            avatar: "https://reactnative.dev/img/tiny_logo.png",
             ...documentSnapshot.data(),
           };
         });
-
         setThreads(threads);
 
         if (loading) {
@@ -66,7 +59,6 @@ const MessageList = ({ navigation }) => {
   }, []);
 
   const handlePress = (item) => {
-
     const secondUser = item.users.filter((user) => {
       return user !== userName;
     });
@@ -81,13 +73,21 @@ const MessageList = ({ navigation }) => {
         ItemSeparatorComponent={() => <Divider />}
         renderItem={({ item }) => (
           //   console.log(item)
-          <List.Item
-            title={item._id}
-            description={item.id}
-            titleNumberOfLines={1}
-            descriptionNumberOfLines={1}
-            onPress={() => handlePress(item)}
-          />
+
+          <>
+            <Image
+              source={{
+                uri: item.avatar,
+              }}
+            />
+            <List.Item
+              title={item.name}
+              description={`You are currently swapping with ${item.name}!`}
+              titleNumberOfLines={1}
+              descriptionNumberOfLines={1}
+              onPress={() => handlePress(item)}
+            />
+          </>
         )}
       />
     </View>
