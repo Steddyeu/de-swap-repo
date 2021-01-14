@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useContext, useState } from 'react';
+import React, { useEffect, useReducer, useContext, useState } from "react";
 import {
   Button,
   StyleSheet,
@@ -8,14 +8,15 @@ import {
   FlatList,
   SafeAreaView,
   Image,
-} from 'react-native';
-import { Text } from 'react-native-elements';
-import { firebaseService } from '../services';
-import Input from './Input';
-import Message from './Message';
-import { messagesReducer } from './reducer';
-import firebase from '../firebase-config';
-import lodash from 'lodash';
+  Alert,
+} from "react-native";
+import { Text } from "react-native-elements";
+import { firebaseService } from "../services";
+import Input from "./Input";
+import Message from "./Message";
+import { messagesReducer } from "./reducer";
+import firebase from "../firebase-config";
+import lodash from "lodash";
 
 function MessageScreen({ route, navigation }) {
   const user = firebase.auth().currentUser;
@@ -29,41 +30,19 @@ function MessageScreen({ route, navigation }) {
   const [completeSwap, setCompleteSwap] = useState({});
   const [agreeSwap, setAgreeSwap] = useState(false);
 
-  // useEffect(
-  //   function () {
-  //     return firebaseService.messageRef
-  //       .orderBy("created_at", "desc")
-  //       .onSnapshot(function (snapshot) {
-  //         dispatchMessages({ type: "add", payload: snapshot.docs });
-  //       });
-  //   },
-  //   [false]
-  // );
-
   const db = firebase.firestore();
 
-  // useEffect(
-  //   function () {
-  //     return firebaseService.messageRef
-  //       .doc(firebaseService.chatID(userName2))
-  //       .collection("chats")
-  //       .orderBy("created_at", "desc")
-  //       .onSnapshot(function (snapshot) {
-  //         dispatchMessages({ type: "add", payload: snapshot.docs });
-  //       });
-  //   },
-  //   [false]
-  // );
-
   const toggleAgreeSwap = async () => {
+    Alert.alert("Swap will be confirmed when both Users have sent the Item");
     setAgreeSwap(true);
   };
 
   const toggleItemSent = async () => {
+    // Alert.alert("Swap will be confirmed when both Users have sent the Item");
     const user = firebase.auth().currentUser.displayName;
     const dbRef = firebaseService.messageRef
       .doc(firebaseService.chatID(userName2))
-      .collection('images')
+      .collection("images")
       .doc(user);
 
     return dbRef
@@ -73,7 +52,7 @@ function MessageScreen({ route, navigation }) {
       .then(() => {
         return firebaseService.messageRef
           .doc(firebaseService.chatID(userName2))
-          .collection('images')
+          .collection("images")
           .get()
           .then((data) => {
             const completeSwap = {};
@@ -91,15 +70,15 @@ function MessageScreen({ route, navigation }) {
     function () {
       const messagesPromise = firebaseService.messageRef
         .doc(firebaseService.chatID(userName2))
-        .collection('chats')
-        .orderBy('created_at', 'desc')
+        .collection("chats")
+        .orderBy("created_at", "desc")
         .onSnapshot(function (snapshot) {
-          dispatchMessages({ type: 'add', payload: snapshot.docs });
+          dispatchMessages({ type: "add", payload: snapshot.docs });
         });
 
       const itemsPromise = firebaseService.messageRef
         .doc(firebaseService.chatID(userName2))
-        .collection('images')
+        .collection("images")
         .get()
         .then((data) => {
           const items = {};
@@ -114,7 +93,7 @@ function MessageScreen({ route, navigation }) {
 
       const completeSwapCheckPromise = firebaseService.messageRef
         .doc(firebaseService.chatID(userName2))
-        .collection('images')
+        .collection("images")
         .get()
         .then((data) => {
           const completeSwap = {};
@@ -132,7 +111,7 @@ function MessageScreen({ route, navigation }) {
 
   if (lodash.isEqual(completeSwap, refCompleteSwap)) {
     const db = firebase.firestore();
-    db.collection('swapped').add({
+    db.collection("swapped").add({
       userA: userName,
       userAItem: items[userName],
       userB: userName2,
@@ -153,7 +132,7 @@ function MessageScreen({ route, navigation }) {
                 width: 100,
                 height: 100,
                 borderRadius: 50,
-                marginRight: 'auto',
+                marginRight: "auto",
                 marginLeft: 10,
                 marginTop: 10,
               }}
@@ -180,7 +159,7 @@ function MessageScreen({ route, navigation }) {
           }}
           renderItem={function ({ item }) {
             const data = item.data();
-            const side = data.user_id === userName ? 'right' : 'left';
+            const side = data.user_id === userName ? "right" : "left";
 
             // const time = formatAMPM(new Date());
 
@@ -200,21 +179,23 @@ function MessageScreen({ route, navigation }) {
         <Input userName2={userName2} />
         <View></View>
         {lodash.isEqual(completeSwap, refCompleteSwap) ? (
-          <Text>Swap Agreed!!!</Text>
+          <Text style={styles.swapAgreedIcon}>Swap Agreed!!!</Text>
         ) : (
-          <View>
+          <View style={styles.buttonContainer}>
             <TouchableOpacity
+              style={styles.viewItemsButton}
               onPress={() => {
-                navigation.navigate('OtherUser', {
-                  screen: 'OtherUser',
+                navigation.navigate("OtherUser", {
+                  screen: "OtherUser",
                   params: { user: userName2 },
                 });
               }}
             >
-              <Text>View {userName2}'items</Text>
+              <Text>View {userName2}'s items</Text>
             </TouchableOpacity>
             {!agreeSwap ? (
               <TouchableOpacity
+                style={styles.agreeSwapButton}
                 onPress={() => {
                   toggleAgreeSwap();
                 }}
@@ -222,17 +203,18 @@ function MessageScreen({ route, navigation }) {
                 <Text>Agree Swap</Text>
               </TouchableOpacity>
             ) : (
-              <View>
+              <View style={styles.buttonContainer}>
                 <TouchableOpacity
+                  style={styles.confirmSwapButton}
                   onPress={() => {
                     toggleItemSent();
                   }}
                 >
                   <Text>Confirm Item Sent</Text>
                 </TouchableOpacity>
-                <Text>
+                {/* <Text>
                   Swap will be confirmed when both Users have sent the Item
-                </Text>
+                </Text> */}
               </View>
             )}
           </View>
@@ -279,23 +261,69 @@ function MessageScreen({ route, navigation }) {
 
 const styles = StyleSheet.create({
   messagesContainer: {
-    height: '100%',
+    height: "95%",
     paddingBottom: 100,
   },
 
   imageContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   inputContainer: {
-    width: '100%',
+    width: "100%",
     height: 100,
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     paddingVertical: 10,
     paddingLeft: 20,
 
     borderTopWidth: 1,
-    borderTopColor: 'gray',
+    borderTopColor: "gray",
+  },
+  viewItemsButton: {
+    backgroundColor: "#4d88ff",
+    marginTop: 15,
+    width: "40%",
+    alignItems: "center",
+    padding: 10,
+    fontSize: 20,
+    borderRadius: 40,
+    color: "white",
+  },
+  agreeSwapButton: {
+    backgroundColor: "#49d049",
+    marginTop: 15,
+    width: "40%",
+    alignItems: "center",
+    padding: 10,
+    fontSize: 20,
+    borderRadius: 40,
+    color: "white",
+  },
+  buttonContainer: {
+    marginTop: 10,
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  confirmSwapButton: {
+    backgroundColor: "#49d049",
+    marginTop: 5,
+    alignItems: "center",
+    padding: 10,
+    fontSize: 20,
+    borderRadius: 40,
+    color: "white",
+  },
+  swapAgreedIcon: {
+    backgroundColor: "#49d049",
+    marginTop: 20,
+    width: "50%",
+    marginLeft: 75,
+    alignItems: "center",
+    padding: 10,
+    paddingLeft: 25,
+    fontSize: 20,
+    borderRadius: 40,
+    color: "white",
   },
 });
 

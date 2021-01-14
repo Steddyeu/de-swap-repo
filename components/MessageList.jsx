@@ -1,19 +1,19 @@
-import firebase from '../firebase-config';
-import { Text, View } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
-import { firebaseService } from '../services';
+import firebase from "../firebase-config";
+import { Text, View, Image } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
+import { firebaseService } from "../services";
 import React, {
   useEffect,
   useReducer,
   useContext,
   useState,
   StyleSheet,
-} from 'react';
-import { firestore } from 'firebase';
-import { List, Divider } from 'react-native-paper';
-import MessageScreen from './Chatroom';
-import OtherUserScreen from './OtherUser';
-import { createStackNavigator } from '@react-navigation/stack';
+} from "react";
+import { firestore } from "firebase";
+import { Avatar, List, Divider } from "react-native-paper";
+import MessageScreen from "./Chatroom";
+import OtherUserScreen from "./OtherUser";
+import { createStackNavigator } from "@react-navigation/stack";
 
 const MessageList = ({ navigation }) => {
   const [messageArray, setMessageArray] = useState([]);
@@ -25,7 +25,7 @@ const MessageList = ({ navigation }) => {
 
   const getMessage = async () => {
     const db = firebase.firestore();
-    db.collection('messages')
+    db.collection("messages")
       .get()
       .then((data) => {
         data.forEach((doc) => {
@@ -35,27 +35,20 @@ const MessageList = ({ navigation }) => {
   };
 
   useEffect(() => {
-    // getMessage();
     const myMessages = firestore()
-      .collection('messages')
-      //.orderBy('chat_id')
-      //.startAt('yu')
-      //.endAt('yu\uf8ff')
-      .where('users', 'array-contains', userName)
+      .collection("messages")
+      .where("users", "array-contains", userName)
       .onSnapshot((querySnapshot) => {
         const threads = querySnapshot.docs.map((documentSnapshot) => {
           return {
-            // _id: documentSnapshot.id,
-            // // give defaults
-            // name: "",
-            // ...documentSnapshot.data(),
-
-            _id: documentSnapshot.id,
-            name: 'User Chat',
+            _id: documentSnapshot.data().chat_id,
+            name: documentSnapshot.data().users.filter((user) => {
+              return user !== userName;
+            }),
+            avatar: "https://reactnative.dev/img/tiny_logo.png",
             ...documentSnapshot.data(),
           };
         });
-
         setThreads(threads);
 
         if (loading) {
@@ -70,24 +63,32 @@ const MessageList = ({ navigation }) => {
     const secondUser = item.users.filter((user) => {
       return user !== userName;
     });
-    navigation.navigate('Chatroom', { secondUser: secondUser[0] });
+    navigation.navigate("Chatroom", { secondUser: secondUser[0] });
   };
 
   return (
-    <View style={{ backgroundColor: '#ccdfff', flex: 1 }}>
+    <View style={{ backgroundColor: "#ccdfff", flex: 1 }}>
       <FlatList
         data={threads}
         keyExtractor={(item) => item._id}
         ItemSeparatorComponent={() => <Divider />}
         renderItem={({ item }) => (
           //   console.log(item)
-          <List.Item
-            title={item._id}
-            description={item.id}
-            titleNumberOfLines={1}
-            descriptionNumberOfLines={1}
-            onPress={() => handlePress(item)}
-          />
+
+          <>
+            <Avatar.Image
+              source={{
+                uri: item.avatar,
+              }}
+            />
+            <List.Item
+              title={item.name}
+              description={`You are currently swapping with ${item.name}!`}
+              titleNumberOfLines={1}
+              descriptionNumberOfLines={1}
+              onPress={() => handlePress(item)}
+            />
+          </>
         )}
       />
     </View>
