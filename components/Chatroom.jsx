@@ -15,15 +15,19 @@ import Input from './Input';
 import Message from './Message';
 import { messagesReducer } from './reducer';
 import firebase from '../firebase-config';
+import lodash from 'lodash';
 
 function MessageScreen({ route, navigation }) {
   const user = firebase.auth().currentUser;
   const userName = user.displayName;
   const userName2 = route.params.secondUser;
+  let refCompleteSwap = { [userName]: true, [userName2]: true };
 
   const [messages, dispatchMessages] = useReducer(messagesReducer, []);
   const [items, setItems] = useState({});
   const [loadingImages, setLoadingImages] = useState(true);
+  const [completeSwap, setCompleteSwap] = useState({});
+  const [agreeSwap, setAgreeSwap] = useState(false);
 
   // useEffect(
   //   function () {
@@ -51,6 +55,38 @@ function MessageScreen({ route, navigation }) {
   //   [false]
   // );
 
+  const toggleAgreeSwap = async () => {
+    setAgreeSwap(true);
+  };
+
+  const toggleItemSent = async () => {
+    const user = firebase.auth().currentUser.displayName;
+    const dbRef = firebaseService.messageRef
+      .doc(firebaseService.chatID(userName2))
+      .collection('images')
+      .doc(user);
+
+    return dbRef
+      .update({
+        itemSent: true,
+      })
+      .then(() => {
+        return firebaseService.messageRef
+          .doc(firebaseService.chatID(userName2))
+          .collection('images')
+          .get()
+          .then((data) => {
+            const completeSwap = {};
+            data.forEach((doc) => {
+              const { itemSent } = doc.data();
+              completeSwap[doc.id] = itemSent;
+            });
+
+            setCompleteSwap(completeSwap);
+          });
+      });
+  };
+
   useEffect(
     function () {
       const messagesPromise = firebaseService.messageRef
@@ -75,11 +111,37 @@ function MessageScreen({ route, navigation }) {
           setItems(items);
           setLoadingImages(false);
         });
-      Promise.all([messagesPromise, itemsPromise]);
+
+      const completeSwapCheckPromise = firebaseService.messageRef
+        .doc(firebaseService.chatID(userName2))
+        .collection('images')
+        .get()
+        .then((data) => {
+          const completeSwap = {};
+          data.forEach((doc) => {
+            const { itemSent } = doc.data();
+            completeSwap[doc.id] = itemSent;
+          });
+
+          setCompleteSwap(completeSwap);
+        });
+      Promise.all([messagesPromise, itemsPromise, completeSwapCheckPromise]);
     },
     [false]
   );
 
+  if (lodash.isEqual(completeSwap, refCompleteSwap)) {
+    const db = firebase.firestore();
+    db.collection('swapped').add({
+      userA: userName,
+      userAItem: items[userName],
+      userB: userName2,
+      userBItem: items[userName2],
+    });
+  }
+  // if (lodash.isEqual(completeSwap, refCompleteSwap)) {
+  //   return <Text>Hello</Text>;
+  // } else {
   return (
     <SafeAreaView>
       <View style={styles.messagesContainer}>
@@ -137,7 +199,45 @@ function MessageScreen({ route, navigation }) {
       <View style={styles.inputContainer}>
         <Input userName2={userName2} />
         <View></View>
-        <TouchableOpacity
+        {lodash.isEqual(completeSwap, refCompleteSwap) ? (
+          <Text>Swap Agreed!!!</Text>
+        ) : (
+          <View>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('OtherUser', {
+                  screen: 'OtherUser',
+                  params: { user: userName2 },
+                });
+              }}
+            >
+              <Text>View {userName2}'items</Text>
+            </TouchableOpacity>
+            {!agreeSwap ? (
+              <TouchableOpacity
+                onPress={() => {
+                  toggleAgreeSwap();
+                }}
+              >
+                <Text>Agree Swap</Text>
+              </TouchableOpacity>
+            ) : (
+              <View>
+                <TouchableOpacity
+                  onPress={() => {
+                    toggleItemSent();
+                  }}
+                >
+                  <Text>Confirm Item Sent</Text>
+                </TouchableOpacity>
+                <Text>
+                  Swap will be confirmed when both Users have sent the Item
+                </Text>
+              </View>
+            )}
+          </View>
+        )}
+        {/* <TouchableOpacity
           onPress={() => {
             navigation.navigate('OtherUser', {
               screen: 'OtherUser',
@@ -147,6 +247,31 @@ function MessageScreen({ route, navigation }) {
         >
           <Text>View {userName2}'items</Text>
         </TouchableOpacity>
+        {!agreeSwap ? (
+          <TouchableOpacity
+            onPress={() => {
+              toggleAgreeSwap();
+            }}
+          >
+            <Text>Agree Swap</Text>
+          </TouchableOpacity>
+        ) : (
+          <View>
+            <TouchableOpacity
+              onPress={() => {
+                toggleItemSent();
+              }}
+            >
+              <Text>Confirm Item Sent</Text>
+            </TouchableOpacity>
+            <Text>
+              Swap will be confirmed when both Users have sent the Item
+            </Text>
+            {lodash.isEqual(completeSwap, refCompleteSwap) && (
+              <Text>Swap Agreed!!!</Text>
+            )}
+          </View>
+        )} */}
       </View>
     </SafeAreaView>
   );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 // import { Button, Image, View, Platform } from "react-native";
 import {
   View,
@@ -11,30 +11,30 @@ import {
   Image,
   Button,
   text,
-} from "react-native";
-import * as ImagePicker from "expo-image-picker";
-import Constants from "expo-constants";
-import firebase from "../firebase-config";
-import { useForm } from "react-hook-form";
-import { TextInput } from "react-native-gesture-handler";
-import { Picker } from "@react-native-picker/picker";
+} from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import Constants from 'expo-constants';
+import firebase from '../firebase-config';
+import { useForm } from 'react-hook-form';
+import { TextInput } from 'react-native-gesture-handler';
+import { Picker } from '@react-native-picker/picker';
 
 export default function Camera() {
   const [image, setImage] = useState(null);
-  const [selectedSize, setSelectedSize] = useState("");
-  const [selectedCondition, setSelectedCondition] = useState("");
-  const [selectedType, setSelectedType] = useState("");
+  const [selectedSize, setSelectedSize] = useState('');
+  const [selectedCondition, setSelectedCondition] = useState('');
+  const [selectedType, setSelectedType] = useState('');
 
   const user = firebase.auth().currentUser;
 
   useEffect(() => {
     (async () => {
-      if (Platform.OS !== "web") {
+      if (Platform.OS !== 'web') {
         const {
           status,
         } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== "granted") {
-          alert("Sorry, we need camera roll permissions to make this work!");
+        if (status !== 'granted') {
+          alert('Sorry, we need camera roll permissions to make this work!');
         }
       }
     })();
@@ -87,11 +87,11 @@ export default function Camera() {
   const { register, handleSubmit, setValue } = useForm();
 
   useEffect(() => {
-    register("imageName", "imageSize");
+    register('imageName', 'imageSize');
   }, [register]);
 
   const onSubmit = (data) => {
-    console.log("data--->", data);
+    console.log('data--->', data);
     uploadImage(image, data.imageName)
       .then(() => {
         const storage = firebase.storage().ref();
@@ -101,7 +101,7 @@ export default function Camera() {
           //console.log(“upLoadRef--->“, url);
           // console.log(‘data---->’, data)
           const db = firebase.firestore();
-          db.collection("items").add({
+          db.collection('items').add({
             name: data.imageName,
             url: url,
             size: selectedSize,
@@ -109,7 +109,7 @@ export default function Camera() {
             condition: selectedCondition,
             owner: user.displayName,
           });
-          Alert.alert("Item added!");
+          Alert.alert('Item added!');
           setImage(null);
         });
       })
@@ -137,7 +137,7 @@ export default function Camera() {
             style={styles.textBox}
             placeholder="...Item description..."
             onChangeText={(text) => {
-              setValue("imageName", text);
+              setValue('imageName', text);
             }}
           />
           <View style={styles.pickers}>
@@ -206,20 +206,20 @@ export default function Camera() {
 const styles = StyleSheet.create({
   overallContainer: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#ccdfff",
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#ccdfff',
   },
   openCameraButton: {
     borderRadius: 40,
     margin: 5,
-    backgroundColor: "#1E90FF",
+    backgroundColor: '#1E90FF',
   },
   Camera: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   image: {
     marginTop: 10,
@@ -229,15 +229,15 @@ const styles = StyleSheet.create({
   },
 
   buttons: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-evenly",
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
   },
 
   button: {
     marginRight: 5,
-    color: "white",
-    backgroundColor: "#1E90FF",
+    color: 'white',
+    backgroundColor: '#1E90FF',
     padding: 10,
     borderRadius: 40,
   },
@@ -246,16 +246,16 @@ const styles = StyleSheet.create({
     width: 200,
   },
   pickers: {
-    display: "flex",
+    display: 'flex',
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
 
   textBox: {
-    color: "black",
+    color: 'black',
     marginBottom: 10,
     marginTop: 10,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 15,
     width: 240,
     height: 40,
@@ -264,7 +264,7 @@ const styles = StyleSheet.create({
     marginBottom: 0,
   },
   text: {
-    color: "white",
+    color: 'white',
     fontSize: 15,
     padding: 10,
   },
