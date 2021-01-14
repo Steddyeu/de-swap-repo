@@ -12,6 +12,7 @@ import React, {
 import { firestore } from "firebase";
 import { Avatar, List, Divider } from "react-native-paper";
 import MessageScreen from "./Chatroom";
+import OtherUserScreen from "./OtherUser";
 import { createStackNavigator } from "@react-navigation/stack";
 
 const MessageList = ({ navigation }) => {
@@ -22,16 +23,16 @@ const MessageList = ({ navigation }) => {
   const user = firebase.auth().currentUser;
   const userName = user.displayName;
 
-  // const getMessage = async () => {
-  //   const db = firebase.firestore();
-  //   db.collection("messages")
-  //     .get()
-  //     .then((data) => {
-  //       data.forEach((doc) => {
-  //         console.log(doc.data());
-  //       });
-  //     });
-  // };
+  const getMessage = async () => {
+    const db = firebase.firestore();
+    db.collection("messages")
+      .get()
+      .then((data) => {
+        data.forEach((doc) => {
+          console.log(doc.data());
+        });
+      });
+  };
 
   useEffect(() => {
     const myMessages = firestore()
@@ -101,6 +102,7 @@ export default function MessageStackScreen() {
     <MessageStack.Navigator>
       <MessageStack.Screen name="My Messages" component={MessageList} />
       <MessageStack.Screen name="Chatroom" component={MessageScreen} />
+      <MessageStack.Screen name="OtherUser" component={OtherUserScreen} />
     </MessageStack.Navigator>
   );
 }
