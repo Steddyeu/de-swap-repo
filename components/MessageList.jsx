@@ -2,12 +2,18 @@ import firebase from '../firebase-config';
 import { Text, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { firebaseService } from '../services';
-import React, { useEffect, useReducer, useContext, useState } from 'react';
+import React, {
+  useEffect,
+  useReducer,
+  useContext,
+  useState,
+  StyleSheet,
+} from 'react';
 import { firestore } from 'firebase';
 import { List, Divider } from 'react-native-paper';
 import MessageScreen from './Chatroom';
-import { createStackNavigator } from '@react-navigation/stack';
 import OtherUserScreen from './OtherUser';
+import { createStackNavigator } from '@react-navigation/stack';
 
 const MessageList = ({ navigation }) => {
   const [messageArray, setMessageArray] = useState([]);
@@ -68,7 +74,7 @@ const MessageList = ({ navigation }) => {
   };
 
   return (
-    <View>
+    <View style={{ backgroundColor: '#ccdfff', flex: 1 }}>
       <FlatList
         data={threads}
         keyExtractor={(item) => item._id}
@@ -99,5 +105,11 @@ export default function MessageStackScreen() {
     </MessageStack.Navigator>
   );
 }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     backgroundColor: "#ccdfff",
+//   },
+// });
 
 // export default MessageList;

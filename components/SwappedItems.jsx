@@ -39,12 +39,13 @@ export default function SwappedItems() {
     <View style={styles.swappedContainer}>
       <Text style={styles.header}>Your Swaps</Text>
       {swaps.map((swap) => {
+        console.log(swap);
         return (
           <View style={styles.swapListContainer}>
             <Image
               source={{ uri: swap.userAItem }}
               style={{ width: 100, height: 100 }}
-              key={swap.url}
+              key={swap.userAItem}
             ></Image>
             <MaterialCommunityIcons
               name="twitter-retweet"
@@ -54,7 +55,7 @@ export default function SwappedItems() {
             <Image
               source={{ uri: swap.userBItem }}
               style={{ width: 100, height: 100 }}
-              key={swap.url}
+              key={swap.userBItem}
             ></Image>
           </View>
         );
@@ -65,13 +66,17 @@ export default function SwappedItems() {
 
 const styles = StyleSheet.create({
   swappedContainer: {
+    flex: 1,
     justifyContent: 'flex-start',
     marginTop: 40,
+    backgroundColor: '#ccdfff',
   },
 
   header: {
     textAlign: 'center',
-    fontSize: 30,
+    fontSize: 35,
+    color: '#000080',
+    fontWeight: 'bold',
   },
 
   swapListContainer: {

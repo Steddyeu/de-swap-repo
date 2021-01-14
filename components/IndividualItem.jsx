@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   FlatList,
   Text,
+  ScrollView,
 } from "react-native";
 import firebase from "../firebase-config";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -61,10 +62,13 @@ function IndividualItem({ route, navigation }) {
     // });
   };
 
+  const user = firebase.auth().currentUser;
+  const currentUser = user.displayName;
+
   return (
-    <View style={styles.mainContainer}>
+    <ScrollView style={styles.mainContainer}>
       <Text style={styles.owner}>
-        <TouchableOpacity
+        <TouchableOpacity style={{flexDirection: 'row', justifyContent: 'center'}}
           onPress={() => {
             navigation.navigate("OtherUser", {
               screen: "OtherUser",
@@ -79,8 +83,8 @@ function IndividualItem({ route, navigation }) {
             }}
             style={styles.avatar}
           />
+          <Text style={styles.owner}>- {itemInfo.owner}'s item</Text>
         </TouchableOpacity>
-        {itemInfo.owner}'s item
       </Text>
       <View style={styles.imageContainer}>
         <Image source={{ uri: itemInfo.url }} style={styles.image} />
@@ -88,22 +92,31 @@ function IndividualItem({ route, navigation }) {
       <View style={styles.itemInfoContainer}>
         <View>
           <Text style={styles.textItem}>
-            <Text style={styles.label}>Name: </Text> {itemInfo.name}
+            <Text>
+              <Text style={styles.label}>Name: </Text>
+              {itemInfo.name}
+            </Text>
             <Text style={styles.label}> Size: </Text> {itemInfo.size}
           </Text>
         </View>
 
         <Text style={styles.textItem}>
           <Text style={styles.label}>Condition: </Text>
-          {itemInfo.condition} <Text style={styles.label}> Type: </Text>
+          {itemInfo.condition}
+          <Text style={styles.label}> Type: </Text>
           {itemInfo.type}
         </Text>
       </View>
 
+{
+       currentUser != itemInfo.owner && 
       <TouchableOpacity style={styles.buttonContainer} onPress={handlePress}>
         <Text style={styles.button}>Request to Swap</Text>
       </TouchableOpacity>
-    </View>
+       
+}
+
+    </ScrollView>
   );
 }
 const IndividualItemStack = createStackNavigator();
@@ -127,7 +140,6 @@ export default function IndividualItemStackScreen() {
 const styles = StyleSheet.create({
   mainContainer: {
     backgroundColor: "#ccdfff",
-
     flex: 1,
   },
 
@@ -143,22 +155,35 @@ const styles = StyleSheet.create({
   },
   textItem: {
     fontSize: 17,
+    borderRadius: 20,
+    padding: 5,
+    marginBottom: 5,
+    marginRight: 30,
+    justifyContent: "center",
+    color: "#0044cc",
+    backgroundColor: "#99bbff",
   },
   label: {
     fontWeight: "bold",
+    color: "#000066",
   },
   owner: {
     fontSize: 25,
     fontWeight: "bold",
-    paddingBottom: 20,
+    paddingBottom: 5,
     backgroundColor: "#ccdfff",
-    color: "black",
-
+    color: "#000080",
+    borderRadius: 40,
     marginLeft: 10,
     alignItems: "center",
+    marginLeft: 10,
+    marginTop: 5,
   },
   imageContainer: {
     backgroundColor: "white",
+    borderTopWidth: 3,
+    borderBottomWidth: 3,
+    borderColor: "#99bbff",
   },
   buttonContainer: {
     alignItems: "center",
@@ -176,5 +201,6 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 40,
     backgroundColor: "red",
+    borderWidth: 3,
   },
 });

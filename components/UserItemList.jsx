@@ -10,7 +10,6 @@ import {
   Text,
 } from 'react-native';
 import { Dimensions } from 'react-native';
-import HomeScreen from './Home';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -18,6 +17,8 @@ function UserItemList(props) {
   return (
     <View style={styles.itemList}>
       <FlatList
+        keyExtractor={(item) => item}
+
         data={props.imageUrls}
         renderItem={({ item }) => (
           <TouchableOpacity
