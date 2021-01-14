@@ -1,14 +1,8 @@
 import firebase from "../firebase-config";
-import { Text, View, Image } from "react-native";
+import { Text, View, Image, StyleSheet } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { firebaseService } from "../services";
-import React, {
-  useEffect,
-  useReducer,
-  useContext,
-  useState,
-  StyleSheet,
-} from "react";
+import React, { useEffect, useReducer, useContext, useState } from "react";
 import { firestore } from "firebase";
 import { Avatar, List, Divider } from "react-native-paper";
 import MessageScreen from "./Chatroom";
@@ -45,7 +39,8 @@ const MessageList = ({ navigation }) => {
             name: documentSnapshot.data().users.filter((user) => {
               return user !== userName;
             }),
-            avatar: "https://reactnative.dev/img/tiny_logo.png",
+            avatar:
+              "https://freeiconshop.com/wp-content/uploads/edd/refresh-double-flat.png",
             ...documentSnapshot.data(),
           };
         });
@@ -67,7 +62,12 @@ const MessageList = ({ navigation }) => {
   };
 
   return (
-    <View style={{ backgroundColor: "#ccdfff", flex: 1 }}>
+    <View
+      style={{
+        backgroundColor: "#ccdfff",
+        flex: 1,
+      }}
+    >
       <FlatList
         data={threads}
         keyExtractor={(item) => item._id}
@@ -76,18 +76,25 @@ const MessageList = ({ navigation }) => {
           //   console.log(item)
 
           <>
-            <Avatar.Image
-              source={{
-                uri: item.avatar,
-              }}
-            />
-            <List.Item
-              title={item.name}
-              description={`You are currently swapping with ${item.name}!`}
-              titleNumberOfLines={1}
-              descriptionNumberOfLines={1}
-              onPress={() => handlePress(item)}
-            />
+            <View style={styles.chatroomContainer}>
+              <Avatar.Image
+                source={{
+                  uri: item.avatar,
+                }}
+                size={65}
+              />
+              <List.Item
+                title={item.name}
+                description={`You are currently swapping with ${item.name}!`}
+                titleNumberOfLines={1}
+                descriptionNumberOfLines={1}
+                onPress={() => handlePress(item)}
+                style={{
+                  backgroundColor: "#ccdfff",
+                  flex: 1,
+                }}
+              />
+            </View>
           </>
         )}
       />
@@ -107,10 +114,11 @@ export default function MessageStackScreen() {
   );
 }
 
-// const styles = StyleSheet.create({
-//   container: {
-//     backgroundColor: "#ccdfff",
-//   },
-// });
-
-// export default MessageList;
+const styles = StyleSheet.create({
+  chatroomContainer: {
+    backgroundColor: "#ccdfff",
+    flexDirection: "row",
+    marginTop: 10,
+    padding: 5,
+  },
+});
