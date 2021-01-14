@@ -33,6 +33,7 @@ export default function SwappedItems() {
     <View style={styles.swappedContainer}>
       <Text style={styles.header}>Your Swaps</Text>
       {swaps.map((swap) => {
+        console.log(swap)
         return (
           <View style={styles.swapListContainer}>
             <Image
@@ -48,7 +49,7 @@ export default function SwappedItems() {
             <Image
               source={{ uri: swap.swappedForUrl }}
               style={{ width: 140, height: 140 }}
-              key={swap.url}
+              key={swap.swappedForUrl}
             ></Image>
           </View>
         );

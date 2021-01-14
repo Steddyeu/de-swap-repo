@@ -10,7 +10,7 @@ import React, {
   StyleSheet,
 } from "react";
 import { firestore } from "firebase";
-import { List, Divider } from "react-native-paper";
+import { Avatar, List, Divider } from "react-native-paper";
 import MessageScreen from "./Chatroom";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -75,7 +75,7 @@ const MessageList = ({ navigation }) => {
           //   console.log(item)
 
           <>
-            <Image
+            <Avatar.Image
               source={{
                 uri: item.avatar,
               }}

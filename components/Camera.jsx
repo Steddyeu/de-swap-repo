@@ -119,18 +119,22 @@ export default function Camera() {
   };
 
   return (
-    <View style={styles.overallContainer}>
-      <TouchableOpacity style={styles.openCameraButton} onPress={pickImage}>
-        <Text style={styles.text}>Pick image from camera roll</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.openCameraButton}
-        onPress={onChooseImagePress}
-      >
-        <Text style={styles.text}>Open Camera</Text>
-      </TouchableOpacity>
 
-      {image && (
+    <View style={styles.overallContainer}>
+
+      {!image ? (
+        <>
+        <TouchableOpacity style={styles.openCameraButton} onPress={pickImage}>
+          <Text style={styles.text}>Pick image from camera roll</Text>
+        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.openCameraButton}
+            onPress={onChooseImagePress}
+          >
+            <Text style={styles.text}>Open Camera</Text>
+          </TouchableOpacity>
+          </>
+          ) : (
         <>
           <Image source={{ uri: image }} style={styles.image} />
           <TextInput
@@ -222,10 +226,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   image: {
-    marginTop: 10,
-    width: 250,
-    height: 280,
+    marginTop: 40,
+    width: 370,
+    height: 410,
     borderRadius: 10,
+    borderWidth: 5,
+    borderColor: '#99bbff',
   },
 
   buttons: {
