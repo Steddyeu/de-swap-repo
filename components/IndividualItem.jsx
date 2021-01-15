@@ -68,7 +68,8 @@ function IndividualItem({ route, navigation }) {
   return (
     <ScrollView style={styles.mainContainer}>
       <Text style={styles.owner}>
-        <TouchableOpacity style={{flexDirection: 'row', justifyContent: 'center'}}
+        <TouchableOpacity
+          style={{ flexDirection: "row", justifyContent: "center" }}
           onPress={() => {
             navigation.navigate("OtherUser", {
               screen: "OtherUser",
@@ -108,14 +109,11 @@ function IndividualItem({ route, navigation }) {
         </Text>
       </View>
 
-{
-       currentUser != itemInfo.owner && 
-      <TouchableOpacity style={styles.buttonContainer} onPress={handlePress}>
-        <Text style={styles.button}>Request to Swap</Text>
-      </TouchableOpacity>
-       
-}
-
+      {currentUser != itemInfo.owner && (
+        <TouchableOpacity style={styles.buttonContainer} onPress={handlePress}>
+          <Text style={styles.button}>Request to Swap</Text>
+        </TouchableOpacity>
+      )}
     </ScrollView>
   );
 }
@@ -160,19 +158,19 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     marginRight: 30,
     justifyContent: "center",
-    color: "#0044cc",
+    color: "black",
     backgroundColor: "#99bbff",
   },
   label: {
     fontWeight: "bold",
-    color: "#000066",
+    color: "black",
   },
   owner: {
     fontSize: 25,
     fontWeight: "bold",
     paddingBottom: 5,
     backgroundColor: "#ccdfff",
-    color: "#000080",
+    color: "black",
     borderRadius: 40,
     marginLeft: 10,
     alignItems: "center",
