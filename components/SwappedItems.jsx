@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Button, StyleSheet, TextInput, View, Image, Text } from 'react-native';
-import firebase from '../firebase-config';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import React, { useState, useEffect } from "react";
+import { Button, StyleSheet, TextInput, View, Image, Text } from "react-native";
+import firebase from "../firebase-config";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function SwappedItems() {
   const [swaps, setSwaps] = useState([]);
@@ -9,7 +9,7 @@ export default function SwappedItems() {
 
   const getSwappedItems = async () => {
     const db = firebase.firestore();
-    db.collection('swapped').onSnapshot((data) => {
+    db.collection("swapped").onSnapshot((data) => {
       const swapsArray = [];
       data.forEach((doc) => {
         const { userA, userAItem, userB, userBItem } = doc.data();
@@ -46,11 +46,18 @@ export default function SwappedItems() {
               style={{ width: 100, height: 100 }}
               key={swap.userAItem}
             ></Image>
-            <MaterialCommunityIcons
+            {/* <MaterialCommunityIcons
               name="twitter-retweet"
-              color={'darkblue'}
+              color={"darkblue"}
               size={100}
-            />
+            /> */}
+            <Image
+              source={{
+                uri:
+                  "https://freeiconshop.com/wp-content/uploads/edd/refresh-double-flat.png",
+              }}
+              style={{ width: 100, height: 100 }}
+            ></Image>
             <Image
               source={{ uri: swap.userBItem }}
               style={{ width: 100, height: 100 }}
@@ -66,21 +73,21 @@ export default function SwappedItems() {
 const styles = StyleSheet.create({
   swappedContainer: {
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: "flex-start",
     marginTop: 40,
-    backgroundColor: '#ccdfff',
+    backgroundColor: "#ccdfff",
   },
 
   header: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 35,
-    color: '#000080',
-    fontWeight: 'bold',
+    color: "#000080",
+    fontWeight: "bold",
   },
 
   swapListContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginTop: 30,
   },
 });
