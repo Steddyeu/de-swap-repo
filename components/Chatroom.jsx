@@ -88,8 +88,7 @@ function MessageScreen({ route, navigation }) {
       const itemsPromise = firebaseService.messageRef
         .doc(firebaseService.chatID(userName2))
         .collection('images')
-        .get()
-        .then((data) => {
+        .onSnapshot((data) => {
           const items = {};
           data.forEach((doc) => {
             const { imageURL } = doc.data();
@@ -98,6 +97,20 @@ function MessageScreen({ route, navigation }) {
           setItems(items);
           setLoadingImages(false);
         });
+
+      // const itemsPromise = firebaseService.messageRef
+      //   .doc(firebaseService.chatID(userName2))
+      //   .collection('images')
+      //   .get()
+      //   .then((data) => {
+      //     const items = {};
+      //     data.forEach((doc) => {
+      //       const { imageURL } = doc.data();
+      //       items[doc.id] = imageURL;
+      //     });
+      //     setItems(items);
+      //     setLoadingImages(false);
+      //   });
 
       const completeSwapCheckPromise = firebaseService.messageRef
         .doc(firebaseService.chatID(userName2))
