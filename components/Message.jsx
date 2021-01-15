@@ -1,11 +1,10 @@
-import React from "react";
-import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
-import firebase from "../firebase-config";
+import React from 'react';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import firebase from '../firebase-config';
 
 export default function Message({ message, side, user }) {
-
   let isLeftSide;
-  if (side === "left") {
+  if (side === 'left') {
     isLeftSide = true;
   } else {
     isLeftSide = false;
@@ -34,16 +33,16 @@ export default function Message({ message, side, user }) {
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
+    width: '100%',
     paddingVertical: 3,
     paddingHorizontal: 10,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-start",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
   },
   textContainer: {
     width: 160,
-    backgroundColor: "gray",
+    backgroundColor: 'gray',
 
     borderRadius: 15,
     paddingHorizontal: 10,
@@ -51,24 +50,23 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   rightContainer: {
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
   },
   rightTextContainer: {
-    backgroundColor: "lightblue",
+    backgroundColor: 'lightblue',
     marginRight: 10,
   },
   leftText: {
-    textAlign: "left",
+    textAlign: 'left',
     fontSize: 12,
   },
   rightText: {
-    textAlign: "right",
+    textAlign: 'right',
     fontSize: 12,
   },
   text: {
     fontSize: 12,
   },
-
 });
 
 const flattenedStyles = {
