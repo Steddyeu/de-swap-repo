@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from "react";
 import {
   Button,
   StyleSheet,
@@ -7,13 +7,13 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-} from 'react-native';
-import { Text } from 'react-native-elements';
-import firebase from '../firebase-config';
-import { UserContext } from './context/user';
-import UserItemList from './UserItemList';
-import IndividualItem from './IndividualItem';
-import { createStackNavigator } from '@react-navigation/stack';
+} from "react-native";
+import { Text } from "react-native-elements";
+import firebase from "../firebase-config";
+import { UserContext } from "./context/user";
+import UserItemList from "./UserItemList";
+import IndividualItem from "./IndividualItem";
+import { createStackNavigator } from "@react-navigation/stack";
 
 const UserStack = createStackNavigator();
 
@@ -42,7 +42,7 @@ function UserScreen({ navigation }) {
 
   const getImage = async () => {
     const db = firebase.firestore();
-    db.collection('items')
+    db.collection("items")
       .get()
       .then((images) => {
         const imageArray = [];
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   userName: {
     marginTop: 10,
     textTransform: "capitalize",
-    color: "#000080",
+    color: "black",
     fontWeight: "bold",
     fontSize: 20,
   },
