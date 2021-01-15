@@ -18,7 +18,6 @@ export default function SwappedItems() {
           const swapInfo = { userA, userAItem, userB, userBItem };
           swapsArray.push(swapInfo);
         }
-        console.log(swapsArray, 'here');
       });
       setSwaps(swapsArray);
     });
