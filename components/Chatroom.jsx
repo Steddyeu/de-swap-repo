@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useContext, useState } from "react";
+import React, { useEffect, useReducer, useContext, useState } from 'react';
 import {
   Button,
   StyleSheet,
@@ -9,14 +9,14 @@ import {
   SafeAreaView,
   Image,
   Alert,
-} from "react-native";
-import { Text } from "react-native-elements";
-import { firebaseService } from "../services";
-import Input from "./Input";
-import Message from "./Message";
-import { messagesReducer } from "./reducer";
-import firebase from "../firebase-config";
-import lodash from "lodash";
+} from 'react-native';
+import { Text } from 'react-native-elements';
+import { firebaseService } from '../services';
+import Input from './Input';
+import Message from './Message';
+import { messagesReducer } from './reducer';
+import firebase from '../firebase-config';
+import lodash from 'lodash';
 
 function MessageScreen({ route, navigation }) {
   const user = firebase.auth().currentUser;
@@ -33,7 +33,7 @@ function MessageScreen({ route, navigation }) {
   const db = firebase.firestore();
 
   const toggleAgreeSwap = async () => {
-    Alert.alert("Swap will be confirmed when both Users have sent the Item");
+    Alert.alert('Swap will be confirmed when both Users have sent the Item');
     setAgreeSwap(true);
   };
 
@@ -42,7 +42,7 @@ function MessageScreen({ route, navigation }) {
     const user = firebase.auth().currentUser.displayName;
     const dbRef = firebaseService.messageRef
       .doc(firebaseService.chatID(userName2))
-      .collection("images")
+      .collection('images')
       .doc(user);
 
     return dbRef
@@ -52,7 +52,7 @@ function MessageScreen({ route, navigation }) {
       .then(() => {
         return firebaseService.messageRef
           .doc(firebaseService.chatID(userName2))
-          .collection("images")
+          .collection('images')
           .get()
           .then((data) => {
             const completeSwap = {};
@@ -62,6 +62,15 @@ function MessageScreen({ route, navigation }) {
             });
 
             setCompleteSwap(completeSwap);
+            if (lodash.isEqual(completeSwap, refCompleteSwap)) {
+              const db = firebase.firestore();
+              db.collection('swapped').add({
+                userA: userName,
+                userAItem: items[userName],
+                userB: userName2,
+                userBItem: items[userName2],
+              });
+            }
           });
       });
   };
@@ -70,30 +79,42 @@ function MessageScreen({ route, navigation }) {
     function () {
       const messagesPromise = firebaseService.messageRef
         .doc(firebaseService.chatID(userName2))
-        .collection("chats")
-        .orderBy("created_at", "desc")
+        .collection('chats')
+        .orderBy('created_at', 'desc')
         .onSnapshot(function (snapshot) {
-          dispatchMessages({ type: "add", payload: snapshot.docs });
+          dispatchMessages({ type: 'add', payload: snapshot.docs });
         });
 
       const itemsPromise = firebaseService.messageRef
         .doc(firebaseService.chatID(userName2))
-        .collection("images")
-        .get()
-        .then((data) => {
+        .collection('images')
+        .onSnapshot((data) => {
           const items = {};
           data.forEach((doc) => {
             const { imageURL } = doc.data();
-
             items[doc.id] = imageURL;
           });
           setItems(items);
           setLoadingImages(false);
         });
 
+      // const itemsPromise = firebaseService.messageRef
+      //   .doc(firebaseService.chatID(userName2))
+      //   .collection('images')
+      //   .get()
+      //   .then((data) => {
+      //     const items = {};
+      //     data.forEach((doc) => {
+      //       const { imageURL } = doc.data();
+      //       items[doc.id] = imageURL;
+      //     });
+      //     setItems(items);
+      //     setLoadingImages(false);
+      //   });
+
       const completeSwapCheckPromise = firebaseService.messageRef
         .doc(firebaseService.chatID(userName2))
-        .collection("images")
+        .collection('images')
         .get()
         .then((data) => {
           const completeSwap = {};
@@ -109,15 +130,6 @@ function MessageScreen({ route, navigation }) {
     [false]
   );
 
-  if (lodash.isEqual(completeSwap, refCompleteSwap)) {
-    const db = firebase.firestore();
-    db.collection("swapped").add({
-      userA: userName,
-      userAItem: items[userName],
-      userB: userName2,
-      userBItem: items[userName2],
-    });
-  }
   // if (lodash.isEqual(completeSwap, refCompleteSwap)) {
   //   return <Text>Hello</Text>;
   // } else {
@@ -132,7 +144,7 @@ function MessageScreen({ route, navigation }) {
                 width: 100,
                 height: 100,
                 borderRadius: 50,
-                marginRight: "auto",
+                marginRight: 'auto',
                 marginLeft: 10,
                 marginTop: 10,
               }}
@@ -159,7 +171,7 @@ function MessageScreen({ route, navigation }) {
           }}
           renderItem={function ({ item }) {
             const data = item.data();
-            const side = data.user_id === userName ? "right" : "left";
+            const side = data.user_id === userName ? 'right' : 'left';
 
             // const time = formatAMPM(new Date());
 
@@ -185,8 +197,8 @@ function MessageScreen({ route, navigation }) {
             <TouchableOpacity
               style={styles.viewItemsButton}
               onPress={() => {
-                navigation.navigate("OtherUser", {
-                  screen: "OtherUser",
+                navigation.navigate('OtherUser', {
+                  screen: 'OtherUser',
                   params: { user: userName2 },
                 });
               }}
@@ -261,69 +273,69 @@ function MessageScreen({ route, navigation }) {
 
 const styles = StyleSheet.create({
   messagesContainer: {
-    height: "95%",
+    height: '95%',
     paddingBottom: 100,
   },
 
   imageContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   inputContainer: {
-    width: "100%",
+    width: '100%',
     height: 100,
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
     paddingVertical: 10,
     paddingLeft: 20,
 
     borderTopWidth: 1,
-    borderTopColor: "gray",
+    borderTopColor: 'gray',
   },
   viewItemsButton: {
-    backgroundColor: "#4d88ff",
+    backgroundColor: '#4d88ff',
     marginTop: 15,
-    width: "40%",
-    alignItems: "center",
+    width: '40%',
+    alignItems: 'center',
     padding: 10,
     fontSize: 20,
     borderRadius: 40,
-    color: "white",
+    color: 'white',
   },
   agreeSwapButton: {
-    backgroundColor: "#49d049",
+    backgroundColor: '#49d049',
     marginTop: 15,
-    width: "40%",
-    alignItems: "center",
+    width: '40%',
+    alignItems: 'center',
     padding: 10,
     fontSize: 20,
     borderRadius: 40,
-    color: "white",
+    color: 'white',
   },
   buttonContainer: {
     marginTop: 10,
-    flexDirection: "row",
-    justifyContent: "space-around",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
   confirmSwapButton: {
-    backgroundColor: "#49d049",
+    backgroundColor: '#49d049',
     marginTop: 5,
-    alignItems: "center",
+    alignItems: 'center',
     padding: 10,
     fontSize: 20,
     borderRadius: 40,
-    color: "white",
+    color: 'white',
   },
   swapAgreedIcon: {
-    backgroundColor: "#49d049",
+    backgroundColor: '#49d049',
     marginTop: 20,
-    width: "50%",
+    width: '50%',
     marginLeft: 75,
-    alignItems: "center",
+    alignItems: 'center',
     padding: 10,
     paddingLeft: 25,
     fontSize: 20,
     borderRadius: 40,
-    color: "white",
+    color: 'white',
   },
 });
 
