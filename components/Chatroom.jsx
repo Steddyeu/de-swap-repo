@@ -38,7 +38,6 @@ function MessageScreen({ route, navigation }) {
   };
 
   const toggleItemSent = async () => {
-    // Alert.alert("Swap will be confirmed when both Users have sent the Item");
     const user = firebase.auth().currentUser.displayName;
     const dbRef = firebaseService.messageRef
       .doc(firebaseService.chatID(userName2))
@@ -107,17 +106,6 @@ function MessageScreen({ route, navigation }) {
             const { itemSent } = doc.data();
             completeSwap[doc.id] = itemSent;
           });
-
-          // const completeSwapCheckPromise = firebaseService.messageRef
-          //   .doc(firebaseService.chatID(userName2))
-          //   .collection('images')
-          //   .get()
-          //   .then((data) => {
-          //     const completeSwap = {};
-          //     data.forEach((doc) => {
-          //       const { itemSent } = doc.data();
-          //       completeSwap[doc.id] = itemSent;
-          //     });
 
           setCompleteSwap(completeSwap);
         });
@@ -217,48 +205,10 @@ function MessageScreen({ route, navigation }) {
                 >
                   <Text>Confirm Item Sent</Text>
                 </TouchableOpacity>
-                {/* <Text>
-                  Swap will be confirmed when both Users have sent the Item
-                </Text> */}
               </View>
             )}
           </View>
         )}
-        {/* <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('OtherUser', {
-              screen: 'OtherUser',
-              params: { user: userName2 },
-            });
-          }}
-        >
-          <Text>View {userName2}'items</Text>
-        </TouchableOpacity>
-        {!agreeSwap ? (
-          <TouchableOpacity
-            onPress={() => {
-              toggleAgreeSwap();
-            }}
-          >
-            <Text>Agree Swap</Text>
-          </TouchableOpacity>
-        ) : (
-          <View>
-            <TouchableOpacity
-              onPress={() => {
-                toggleItemSent();
-              }}
-            >
-              <Text>Confirm Item Sent</Text>
-            </TouchableOpacity>
-            <Text>
-              Swap will be confirmed when both Users have sent the Item
-            </Text>
-            {lodash.isEqual(completeSwap, refCompleteSwap) && (
-              <Text>Swap Agreed!!!</Text>
-            )}
-          </View>
-        )} */}
       </View>
     </SafeAreaView>
   );

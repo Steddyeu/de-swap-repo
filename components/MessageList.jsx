@@ -1,13 +1,13 @@
-import firebase from "../firebase-config";
-import { Text, View, Image, StyleSheet } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
-import { firebaseService } from "../services";
-import React, { useEffect, useReducer, useContext, useState } from "react";
-import { firestore } from "firebase";
-import { Avatar, List, Divider } from "react-native-paper";
-import MessageScreen from "./Chatroom";
-import OtherUserScreen from "./OtherUser";
-import { createStackNavigator } from "@react-navigation/stack";
+import firebase from '../firebase-config';
+import { Text, View, Image, StyleSheet } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+import { firebaseService } from '../services';
+import React, { useEffect, useReducer, useContext, useState } from 'react';
+import { firestore } from 'firebase';
+import { Avatar, List, Divider } from 'react-native-paper';
+import MessageScreen from './Chatroom';
+import OtherUserScreen from './OtherUser';
+import { createStackNavigator } from '@react-navigation/stack';
 
 const MessageList = ({ navigation }) => {
   const [messageArray, setMessageArray] = useState([]);
@@ -19,7 +19,7 @@ const MessageList = ({ navigation }) => {
 
   const getMessage = async () => {
     const db = firebase.firestore();
-    db.collection("messages")
+    db.collection('messages')
       .get()
       .then((data) => {
         data.forEach((doc) => {
@@ -30,8 +30,8 @@ const MessageList = ({ navigation }) => {
 
   useEffect(() => {
     const myMessages = firestore()
-      .collection("messages")
-      .where("users", "array-contains", userName)
+      .collection('messages')
+      .where('users', 'array-contains', userName)
       .onSnapshot((querySnapshot) => {
         const threads = querySnapshot.docs.map((documentSnapshot) => {
           return {
@@ -40,7 +40,7 @@ const MessageList = ({ navigation }) => {
               return user !== userName;
             }),
             avatar:
-              "https://freeiconshop.com/wp-content/uploads/edd/refresh-double-flat.png",
+              'https://freeiconshop.com/wp-content/uploads/edd/refresh-double-flat.png',
             ...documentSnapshot.data(),
           };
         });
@@ -58,13 +58,13 @@ const MessageList = ({ navigation }) => {
     const secondUser = item.users.filter((user) => {
       return user !== userName;
     });
-    navigation.navigate("Chatroom", { secondUser: secondUser[0] });
+    navigation.navigate('Chatroom', { secondUser: secondUser[0] });
   };
 
   return (
     <View
       style={{
-        backgroundColor: "#ccdfff",
+        backgroundColor: '#ccdfff',
         flex: 1,
       }}
     >
@@ -73,8 +73,6 @@ const MessageList = ({ navigation }) => {
         keyExtractor={(item) => item._id}
         ItemSeparatorComponent={() => <Divider />}
         renderItem={({ item }) => (
-          //   console.log(item)
-
           <>
             <View style={styles.chatroomContainer}>
               <Avatar.Image
@@ -90,7 +88,7 @@ const MessageList = ({ navigation }) => {
                 descriptionNumberOfLines={1}
                 onPress={() => handlePress(item)}
                 style={{
-                  backgroundColor: "#ccdfff",
+                  backgroundColor: '#ccdfff',
                   flex: 1,
                 }}
               />
@@ -116,8 +114,8 @@ export default function MessageStackScreen() {
 
 const styles = StyleSheet.create({
   chatroomContainer: {
-    backgroundColor: "#ccdfff",
-    flexDirection: "row",
+    backgroundColor: '#ccdfff',
+    flexDirection: 'row',
     marginTop: 10,
     padding: 5,
   },

@@ -18,9 +18,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import IndividualItemStackScreen from './IndividualItem';
 import OtherUserScreen from './OtherUser';
 
-// const windowWidth = Dimensions.get("window").width;
-// const windowHeight = Dimensions.get("window").height;
-
 const HomeStack = createStackNavigator();
 
 function HomeStackScreen() {
@@ -29,8 +26,7 @@ function HomeStackScreen() {
       <HomeStack.Screen name="Home" component={HomeScreen} />
 
       <HomeStack.Screen name="Item" component={IndividualItemStackScreen} />
-        <HomeStack.Screen name="OtherUser" component={OtherUserScreen} />
-
+      <HomeStack.Screen name="OtherUser" component={OtherUserScreen} />
     </HomeStack.Navigator>
   );
 }
@@ -52,7 +48,6 @@ function HomeScreen({ navigation }) {
           }
         });
         setImageUrls(imageArray);
-        // console.log("--->", imageArray);
       });
   };
   useEffect(() => {
@@ -74,16 +69,16 @@ function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   Home: {
     flex: 1,
-    backgroundColor: "#ccdfff",
-    justifyContent: "center",
-    alignItems: "stretch",
+    backgroundColor: '#ccdfff',
+    justifyContent: 'center',
+    alignItems: 'stretch',
   },
 
   header: {
     flex: 0.2,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   images: {
