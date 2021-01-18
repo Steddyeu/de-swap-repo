@@ -16,22 +16,20 @@ import { createStackNavigator } from '@react-navigation/stack';
 function LandingPage({ navigation }) {
   return (
     <View style={styles.landingPage}>
-      <Image source={require("../images/logo.png")} />
+      <Image source={require('../images/logo.png')} />
       <TouchableOpacity
         style={styles.landingButton}
         raised
-        // title="Sign Up"
         icon={<Icon name="user" size={25} color="white" />}
-        onPress={() => navigation.navigate("Signup")}
+        onPress={() => navigation.navigate('Signup')}
       >
         <Text style={styles.text}>Sign Up</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.landingButton}
         raised
-        // title="Log In"
         icon={<Icon name="arrow-right" size={20} color="white" />}
-        onPress={() => navigation.navigate("Login")}
+        onPress={() => navigation.navigate('Login')}
       >
         <Text style={styles.text}>Log In</Text>
       </TouchableOpacity>
@@ -42,8 +40,12 @@ const LandingStack = createStackNavigator();
 
 function LandingStackScreen() {
   return (
-    <LandingStack.Navigator >
-      <LandingStack.Screen name="LandingPage" component={LandingPage} options={{ headerShown: false }} />
+    <LandingStack.Navigator>
+      <LandingStack.Screen
+        name="LandingPage"
+        component={LandingPage}
+        options={{ headerShown: false }}
+      />
 
       <LandingStack.Screen name="Signup" component={SignUp} />
       <LandingStack.Screen name="Login" component={Login} />
@@ -54,21 +56,21 @@ function LandingStackScreen() {
 const styles = StyleSheet.create({
   landingPage: {
     flex: 1,
-    backgroundColor: "#ccdfff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#ccdfff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   landingButton: {
-    backgroundColor: "#1E90FF",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#1E90FF',
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: 40,
     padding: 10,
     marginTop: 10,
-    width: "70%",
+    width: '70%',
   },
   text: {
-    color: "whitesmoke",
+    color: 'whitesmoke',
   },
 });
 

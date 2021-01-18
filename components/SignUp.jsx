@@ -1,4 +1,4 @@
-import React, { Component, useContext } from "react";
+import React, { Component, useContext } from 'react';
 import {
   Button,
   TextInput,
@@ -6,16 +6,15 @@ import {
   StyleSheet,
   TouchableOpacity,
   Text,
-} from "react-native";
-import firebase from "../firebase-config";
-import { UserContext } from "./context/user";
-import { Picker } from "@react-native-picker/picker";
+} from 'react-native';
+import firebase from '../firebase-config';
+import { UserContext } from './context/user';
 
 class SignUp extends Component {
   state = {
-    name: "",
-    email: "",
-    password: "",
+    name: '',
+    email: '',
+    password: '',
     avatar: null,
   };
   onChangeText = (key, value) => {
@@ -50,17 +49,17 @@ class SignUp extends Component {
         <TextInput
           style={styles.inputBox}
           placeholder="Your name!"
-          onChangeText={(value) => this.onChangeText("name", value)}
+          onChangeText={(value) => this.onChangeText('name', value)}
         />
         <TextInput
           style={styles.inputBox}
           placeholder="Your Email address!"
-          onChangeText={(value) => this.onChangeText("email", value)}
+          onChangeText={(value) => this.onChangeText('email', value)}
         />
         <TextInput
           style={styles.inputBox}
           placeholder="Your password!"
-          onChangeText={(value) => this.onChangeText("password", value)}
+          onChangeText={(value) => this.onChangeText('password', value)}
           secureTextEntry={true}
         />
         <TouchableOpacity style={styles.button} onPress={this.submitSignUp}>
@@ -77,25 +76,25 @@ const styles = StyleSheet.create({
   signupContainer: {
     flex: 1,
     padding: 10,
-    justifyContent: "center",
-    backgroundColor: "#ccdfff",
+    justifyContent: 'center',
+    backgroundColor: '#ccdfff',
   },
   button: {
     borderRadius: 40,
-    backgroundColor: "#1E90FF",
-    alignItems: "center",
+    backgroundColor: '#1E90FF',
+    alignItems: 'center',
     padding: 10,
   },
   loginText: {
-    color: "white",
+    color: 'white',
     fontSize: 20,
     fontWeight: 'bold',
   },
   inputBox: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     height: 40,
     borderRadius: 40,
-    textAlign: "center",
+    textAlign: 'center',
     marginBottom: 10,
   },
 });

@@ -23,7 +23,6 @@ export default function Message({ message, side, user }) {
   return (
     <View style={containerStyles}>
       <View style={textContainerStyles}>
-        {/* //Avatar - may need it from props in Message.jsx? */}
         <Text style={textStyles}>{user}</Text>
         <Text style={textStyles}>{message}</Text>
       </View>

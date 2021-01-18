@@ -11,8 +11,6 @@ import { Text } from 'react-native-elements';
 import firebase from '../firebase-config';
 import { UserContext } from './context/user';
 import UserItemList from './UserItemList';
-import IndividualItem from './IndividualItem';
-import { createStackNavigator } from '@react-navigation/stack';
 
 function OtherUserScreen({ route, navigation }) {
   const { logInUser } = useContext(UserContext);
